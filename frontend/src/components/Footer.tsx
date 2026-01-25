@@ -9,10 +9,10 @@ export default function Footer() {
         {/* Column 1: Info */}
         <div>
           <h3 className="text-xl font-bold font-[family-name:var(--font-poppins)] mb-4">
-            Cathy <span className="text-accent">Bilingual Club</span>
+            Language<span className="text-accent">Academy</span>
           </h3>
           <p className="text-gray-300 text-sm">
-            ยกระดับทักษะภาษาของคุณสู่ระดับสากล ด้วยคอร์สเรียนคุณภาพและผู้สอนผู้เชี่ยวชาญจาก Cathy Bilingual Club
+            ยกระดับทักษะภาษาของคุณสู่ระดับสากล ด้วยคอร์สเรียนคุณภาพและผู้สอนผู้เชี่ยวชาญ
           </p>
         </div>
 
@@ -40,13 +40,13 @@ export default function Footer() {
         <div>
           <h4 className="font-bold mb-4">Contact Us</h4>
           <p className="text-sm text-gray-300 mb-2">123 Education Road, Bangkok</p>
-          <p className="text-sm text-gray-300 mb-2">Email: hello@cathybilingual.com</p>
+          <p className="text-sm text-gray-300 mb-2">Email: contact@language.com</p>
           <p className="text-sm text-gray-300">Tel: 02-123-4567</p>
         </div>
       </div>
 
       <div className="border-t border-gray-600 mt-10 pt-6 text-center text-sm text-gray-400">
-        &copy; {new Date().getFullYear()} Cathy Bilingual Club. All rights reserved.
+        &copy; {new Date().getFullYear()} Language Academy. All rights reserved.
       </div>
     </footer>
   );

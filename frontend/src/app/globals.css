@@ -1,41 +1,79 @@
 @import "tailwindcss";
 
 @theme {
-  /* --- 1. ชุดสีใหม่ (New Color Palette) --- */
-  /* ผมเลือกโทนที่สดใสแต่ดูแพง (Modern Vivid) ให้ครับ */
-  --color-my-yellow: #FBBF24; /* Amber-400: เหลืองทอง สว่าง สดใส */
-  --color-my-red:    #EF4444; /* Red-500: แดงมาตรฐาน เด่นชัด */
-  --color-my-orange: #F97316; /* Orange-500: ส้มสด มีพลัง */
-  --color-my-blue:   #3B82F6; /* Blue-500: ฟ้าสวย ทันสมัย ไม่แก่ */
-  --color-my-green:  #10B981; /* Emerald-500: เขียวธรรมชาติ สบายตา */
-  --color-my-black:  #171717; /* Neutral-900: ดำสนิท แต่ไม่แข็งเกินไป */
-  --color-my-gray:   #6B7280; /* Gray-500: เทากลาง อ่านง่าย */
+  /* --- 🎨 Premium Color Palette --- */
+  /* Vivid (สีสด) */
+  --color-brand-yellow: #FFD60A;
+  --color-brand-red:    #FF453A;
+  --color-brand-orange: #FF9F0A;
+  --color-brand-blue:   #0A84FF;
+  --color-brand-green:  #30D158;
+  --color-brand-black:  #1C1C1E;
+  --color-brand-gray:   #8E8E93;
 
-  /* --- 2. เชื่อมกับระบบเดิม (Mapping) --- */
-  /* เปลี่ยนคู่สีตรงนี้ได้ตามใจชอบ เพื่อให้หน้าเว็บเปลี่ยนอารมณ์ทันที */
+  /* Soft (สีพื้นหลังอ่อนๆ ให้ดูแพง) */
+  --color-soft-blue:    #E3F2FD;
+  --color-soft-yellow:  #FFF9C4;
+  --color-soft-red:     #FFEBEE;
   
-  /* ให้สีฟ้า เป็นสีหลัก (Primary) -> ปุ่มหลัก, หัวข้อ */
-  --color-primary: var(--color-my-blue);
-  
-  /* ให้สีส้ม เป็นสีรอง (Secondary) -> ปุ่มรอง, ลิงก์ */
-  --color-secondary: var(--color-my-orange);
-  
-  /* ให้สีเหลือง เป็นสีเน้น (Accent) -> ป้ายราคา, โปรโมชั่น */
-  --color-accent: var(--color-my-yellow);
-  
-  --color-background: #FFFFFF;
-  --color-textDark: var(--color-my-black);
-  --color-textGray: var(--color-my-gray);
+  /* Mapping */
+  --color-primary: var(--color-brand-blue);
+  --color-secondary: var(--color-brand-orange);
+  --color-accent: var(--color-brand-yellow);
+  --color-bg-page: #FAFAFA; /* ขาวควันบุหรี่ */
 
-  /* --- 3. ฟอนต์ (เหมือนเดิม) --- */
+  /* Fonts */
   --font-heading: var(--font-poppins), sans-serif;
   --font-body: var(--font-inter), sans-serif;
-  --font-sans: var(--font-inter), sans-serif;
 }
 
-/* ตั้งค่าพื้นฐาน */
+/* --- 🎬 Cinematic Animations --- */
+/* 1. Fade Up (ค่อยๆ ลอยขึ้น) */
+@keyframes fadeUp {
+  0% { opacity: 0; transform: translateY(40px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* 2. Scale In (ขยายตัวออกมา) */
+@keyframes scaleIn {
+  0% { opacity: 0; transform: scale(0.9); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* 3. Floating (ลอยตุ๊บป่อง) */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+/* 4. Shine (แสงวิบวับพาดผ่าน) */
+@keyframes shine {
+  0% { background-position: 200% center; }
+  100% { background-position: -200% center; }
+}
+
+/* Utilities Class */
+.animate-fade-up { animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.animate-scale-in { animation: scaleIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.animate-float { animation: float 6s ease-in-out infinite; }
+.animate-float-fast { animation: float 4s ease-in-out infinite; }
+
+/* Gradient Text Effect */
+.text-gradient {
+  background: linear-gradient(to right, var(--color-brand-blue), var(--color-brand-green));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% auto;
+  animation: shine 5s linear infinite;
+}
+
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+
 body {
-  color: var(--color-textDark);
-  background: var(--color-background);
+  background: var(--color-bg-page);
+  color: var(--color-brand-black);
   font-family: var(--font-body);
+  overflow-x: hidden;
 }
