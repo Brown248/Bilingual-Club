@@ -9,14 +9,22 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        primary: "#1F3C88",
-        secondary: "#4F6EF7",
-        accent: "#F5B700",
-        background: "#FFFFFF",
+        // Concept: Ascend Tone
+        primary: "#1F3C88",    // Navy Blue
+        secondary: "#4F6EF7",  // Soft Blue
+        accent: "#F5B700",     // Gold / Highlight
+        background: "#FFFFFF", // Clean White
+        textDark: "#1A1A1A",   // High Contrast Text
+        textGray: "#6B7280",   // Soft Text
       },
       fontFamily: {
-        sans: ['var(--font-inter)'], // Assuming Inter via next/font
-      }
+        // Head: Poppins
+        heading: ['var(--font-poppins)', 'sans-serif'], 
+        // Body: Inter
+        body: ['var(--font-inter)', 'sans-serif'],
+        // Default sans
+        sans: ['var(--font-inter)', 'sans-serif'], 
+      },
     },
   },
   plugins: [],
