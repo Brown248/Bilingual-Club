@@ -1,8 +1,41 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
+@theme {
+  /* --- 1. ชุดสีใหม่ (New Color Palette) --- */
+  /* ผมเลือกโทนที่สดใสแต่ดูแพง (Modern Vivid) ให้ครับ */
+  --color-my-yellow: #FBBF24; /* Amber-400: เหลืองทอง สว่าง สดใส */
+  --color-my-red:    #EF4444; /* Red-500: แดงมาตรฐาน เด่นชัด */
+  --color-my-orange: #F97316; /* Orange-500: ส้มสด มีพลัง */
+  --color-my-blue:   #3B82F6; /* Blue-500: ฟ้าสวย ทันสมัย ไม่แก่ */
+  --color-my-green:  #10B981; /* Emerald-500: เขียวธรรมชาติ สบายตา */
+  --color-my-black:  #171717; /* Neutral-900: ดำสนิท แต่ไม่แข็งเกินไป */
+  --color-my-gray:   #6B7280; /* Gray-500: เทากลาง อ่านง่าย */
+
+  /* --- 2. เชื่อมกับระบบเดิม (Mapping) --- */
+  /* เปลี่ยนคู่สีตรงนี้ได้ตามใจชอบ เพื่อให้หน้าเว็บเปลี่ยนอารมณ์ทันที */
+  
+  /* ให้สีฟ้า เป็นสีหลัก (Primary) -> ปุ่มหลัก, หัวข้อ */
+  --color-primary: var(--color-my-blue);
+  
+  /* ให้สีส้ม เป็นสีรอง (Secondary) -> ปุ่มรอง, ลิงก์ */
+  --color-secondary: var(--color-my-orange);
+  
+  /* ให้สีเหลือง เป็นสีเน้น (Accent) -> ป้ายราคา, โปรโมชั่น */
+  --color-accent: var(--color-my-yellow);
+  
+  --color-background: #FFFFFF;
+  --color-textDark: var(--color-my-black);
+  --color-textGray: var(--color-my-gray);
+
+  /* --- 3. ฟอนต์ (เหมือนเดิม) --- */
+  --font-heading: var(--font-poppins), sans-serif;
+  --font-body: var(--font-inter), sans-serif;
+  --font-sans: var(--font-inter), sans-serif;
+}
+
+/* ตั้งค่าพื้นฐาน */
 body {
-  color: #1A1A1A;
-  background: #FFFFFF;
+  color: var(--color-textDark);
+  background: var(--color-background);
+  font-family: var(--font-body);
 }
