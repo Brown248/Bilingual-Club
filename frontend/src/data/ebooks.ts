@@ -40,7 +40,7 @@ export const ebooks: Ebook[] = [
   {
     id: 4,
     title: "5,000 Essential Vocabulary",
-    author: "Language Academy Team",
+    author: "Cathy Bilingual Team",
     category: "Vocabulary",
     price: 290,
     image: "https://placehold.co/400x550/4F6EF7/FFFFFF?text=Vocab+5000",

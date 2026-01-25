@@ -6,8 +6,8 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "600", "700"], variable: "--font-poppins" });
 
 export const metadata: Metadata = {
-  title: "Language Academy",
-  description: "Learn English, Chinese, and IELTS with experts.",
+  title: "Cathy Bilingual Club",
+  description: "Learn English & Chinese with Cathy experts.",
 };
 
 export default function RootLayout({
