@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { Ebook } from '@/data/ebooks';
-import { useCart } from '@/app/context/CartContext'; // Import Hook
+import { useCart } from '@/context/CartContext'; // Import Hook
 
 interface EbookCardProps {
   ebook: Ebook;

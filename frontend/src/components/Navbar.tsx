@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { useCart } from '@/app/context/CartContext'; // Import ตะกร้า
+import { useCart } from '@/context/CartContext'; // Import ตะกร้า
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);

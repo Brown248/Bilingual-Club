@@ -1,5 +1,41 @@
-// src/app/admin/page.tsx
+'use client';
+
+import { useState, useEffect } from 'react';
+
+// กำหนดโครงสร้างข้อมูล (Types)
+interface DashboardStats {
+  totalRevenue: number;
+  activeStudents: number;
+  coursesSold: number;
+  pendingOrders: number;
+}
+
+interface RecentOrder {
+  id: string;
+  customer: string;
+  product: string;
+  amount: number;
+  status: 'Completed' | 'Pending';
+}
+
 export default function AdminDashboard() {
+  // ✅ 1. ตั้งค่าเริ่มต้นเป็น 0 (รอข้อมูลจาก Backend)
+  const [stats, setStats] = useState<DashboardStats>({
+    totalRevenue: 0,
+    activeStudents: 0,
+    coursesSold: 0,
+    pendingOrders: 0
+  });
+
+  // ✅ 2. ตั้งรายการล่าสุดเป็นค่าว่าง
+  const [recentOrders, setRecentOrders] = useState<RecentOrder[]>([]);
+
+  // --- 🔄 Fetch Data (Future Backend) ---
+  useEffect(() => {
+    // TODO: เรียก API ตรงนี้ในอนาคต
+    // fetch('http://localhost:8000/admin/stats').then(...)
+  }, []);
+
   return (
     <div>
       <h1 className="text-3xl font-heading font-bold text-brand-black mb-8">Admin Dashboard</h1>
@@ -10,27 +46,30 @@ export default function AdminDashboard() {
         {/* Card 1: Total Sales */}
         <div className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
           <div className="text-gray-500 text-sm mb-2">Total Revenue</div>
-          <div className="text-3xl font-bold text-brand-black">฿125,400</div>
-          <div className="text-brand-green text-sm mt-2 font-bold">+12% from last month</div>
+          <div className="text-3xl font-bold text-brand-black">฿{stats.totalRevenue.toLocaleString()}</div>
+          <div className="text-gray-400 text-xs mt-2">Waiting for data...</div>
         </div>
 
         {/* Card 2: Students */}
         <div className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
           <div className="text-gray-500 text-sm mb-2">Active Students</div>
-          <div className="text-3xl font-bold text-brand-black">1,240</div>
-          <div className="text-brand-orange text-sm mt-2 font-bold">+5 new today</div>
+          <div className="text-3xl font-bold text-brand-black">{stats.activeStudents.toLocaleString()}</div>
+          <div className="text-gray-400 text-xs mt-2">Total users</div>
         </div>
 
         {/* Card 3: Courses Sold */}
         <div className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
           <div className="text-gray-500 text-sm mb-2">Courses Sold</div>
-          <div className="text-3xl font-bold text-brand-black">850</div>
+          <div className="text-3xl font-bold text-brand-black">{stats.coursesSold.toLocaleString()}</div>
+          <div className="text-gray-400 text-xs mt-2">Lifetime sales</div>
         </div>
 
         {/* Card 4: Pending Orders */}
         <div className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
           <div className="text-gray-500 text-sm mb-2">Pending Orders</div>
-          <div className="text-3xl font-bold text-brand-red">12</div>
+          <div className={`text-3xl font-bold ${stats.pendingOrders > 0 ? 'text-brand-red' : 'text-brand-black'}`}>
+            {stats.pendingOrders}
+          </div>
           <div className="text-xs text-gray-400 mt-2">Requires attention</div>
         </div>
       </div>
@@ -50,19 +89,29 @@ export default function AdminDashboard() {
               </tr>
             </thead>
             <tbody className="text-sm">
-              {[1, 2, 3, 4, 5].map((i) => (
-                <tr key={i} className="border-b border-gray-50 last:border-none hover:bg-gray-50 transition">
-                  <td className="py-4 text-gray-600">#ORD-00{i}</td>
-                  <td className="py-4 font-medium text-brand-black">Student Name {i}</td>
-                  <td className="py-4 text-gray-600">IELTS Intensive Prep</td>
-                  <td className="py-4 font-bold">฿4,500</td>
-                  <td className="py-4">
-                    <span className={`px-3 py-1 rounded-full text-xs font-bold ${i % 2 === 0 ? 'bg-green-100 text-brand-green' : 'bg-yellow-100 text-brand-orange'}`}>
-                      {i % 2 === 0 ? 'Completed' : 'Pending'}
-                    </span>
+              {recentOrders.length === 0 ? (
+                /* กรณีไม่มีข้อมูล */
+                <tr>
+                  <td colSpan={5} className="text-center py-10 text-gray-400">
+                    - ยังไม่มีรายการสั่งซื้อล่าสุด -
                   </td>
                 </tr>
-              ))}
+              ) : (
+                /* กรณีมีข้อมูล (Render Loop) */
+                recentOrders.map((order) => (
+                  <tr key={order.id} className="border-b border-gray-50 last:border-none hover:bg-gray-50 transition">
+                    <td className="py-4 text-gray-600">#{order.id}</td>
+                    <td className="py-4 font-medium text-brand-black">{order.customer}</td>
+                    <td className="py-4 text-gray-600">{order.product}</td>
+                    <td className="py-4 font-bold">฿{order.amount.toLocaleString()}</td>
+                    <td className="py-4">
+                      <span className={`px-3 py-1 rounded-full text-xs font-bold ${order.status === 'Completed' ? 'bg-green-100 text-brand-green' : 'bg-yellow-100 text-brand-orange'}`}>
+                        {order.status}
+                      </span>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

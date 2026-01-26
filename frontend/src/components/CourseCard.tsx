@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { Course } from '@/data/courses';
-import { useCart } from '@/app/context/CartContext';
+import { useCart } from '@/context/CartContext';
 
 interface CourseCardProps {
   course: Course;
