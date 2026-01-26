@@ -1,79 +1,70 @@
 @import "tailwindcss";
 
 @theme {
-  /* --- 🎨 Premium Color Palette --- */
-  /* Vivid (สีสด) */
-  --color-brand-yellow: #FFD60A;
-  --color-brand-red:    #FF453A;
-  --color-brand-orange: #FF9F0A;
-  --color-brand-blue:   #0A84FF;
-  --color-brand-green:  #30D158;
-  --color-brand-black:  #1C1C1E;
-  --color-brand-gray:   #8E8E93;
-
-  /* Soft (สีพื้นหลังอ่อนๆ ให้ดูแพง) */
-  --color-soft-blue:    #E3F2FD;
-  --color-soft-yellow:  #FFF9C4;
-  --color-soft-red:     #FFEBEE;
+  /* --- 🎨 New Palette: Red-Orange-Yellow-Green-Black --- */
   
-  /* Mapping */
-  --color-primary: var(--color-brand-blue);
+  /* 1. Vivid (สีสด) */
+  --color-brand-red:    #FF3B30; /* แดง */
+  --color-brand-orange: #FF9500; /* ส้ม */
+  --color-brand-yellow: #FFCC00; /* เหลือง */
+  --color-brand-green:  #34C759; /* เขียว */
+  --color-brand-black:  #111111; /* ดำสนิท */
+  --color-brand-gray:   #8E8E93; /* เทา */
+
+  /* 2. Soft (สีพื้นหลังอ่อนๆ) */
+  --color-soft-red:     #FFF5F5;
+  --color-soft-orange:  #FFF8F0;
+  --color-soft-yellow:  #FFFDF0;
+  --color-soft-green:   #F0FFF4;
+  --color-soft-gray:    #F5F5F7;
+
+  /* 3. Mapping (จับคู่) */
+  --color-primary: var(--color-brand-black);   /* ปุ่มหลักใช้สีดำ ดูแพง */
   --color-secondary: var(--color-brand-orange);
-  --color-accent: var(--color-brand-yellow);
-  --color-bg-page: #FAFAFA; /* ขาวควันบุหรี่ */
+  --color-bg-page: #FFFFFF;
 
   /* Fonts */
   --font-heading: var(--font-poppins), sans-serif;
   --font-body: var(--font-inter), sans-serif;
 }
 
-/* --- 🎬 Cinematic Animations --- */
-/* 1. Fade Up (ค่อยๆ ลอยขึ้น) */
+/* --- 🎬 Animations --- */
 @keyframes fadeUp {
-  0% { opacity: 0; transform: translateY(40px); }
+  0% { opacity: 0; transform: translateY(30px); }
   100% { opacity: 1; transform: translateY(0); }
 }
 
-/* 2. Scale In (ขยายตัวออกมา) */
 @keyframes scaleIn {
-  0% { opacity: 0; transform: scale(0.9); }
-  100% { opacity: 1; transform: scale(1); }
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
 }
 
-/* 3. Floating (ลอยตุ๊บป่อง) */
 @keyframes float {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-15px); }
+  50% { transform: translateY(-10px); }
 }
 
-/* 4. Shine (แสงวิบวับพาดผ่าน) */
-@keyframes shine {
-  0% { background-position: 200% center; }
-  100% { background-position: -200% center; }
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
-/* Utilities Class */
-.animate-fade-up { animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-.animate-scale-in { animation: scaleIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-.animate-float { animation: float 6s ease-in-out infinite; }
-.animate-float-fast { animation: float 4s ease-in-out infinite; }
+/* Utilities */
+.animate-fade-up { animation: fadeUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+.animate-scale-in { animation: scaleIn 0.6s ease-out forwards; }
+.animate-float { animation: float 5s ease-in-out infinite; }
 
-/* Gradient Text Effect */
-.text-gradient {
-  background: linear-gradient(to right, var(--color-brand-blue), var(--color-brand-green));
+.text-gradient-warm {
+  background: linear-gradient(to right, var(--color-brand-red), var(--color-brand-orange), var(--color-brand-yellow));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-size: 200% auto;
-  animation: shine 5s linear infinite;
+  animation: gradientMove 5s linear infinite;
 }
-
-.delay-100 { animation-delay: 100ms; }
-.delay-200 { animation-delay: 200ms; }
-.delay-300 { animation-delay: 300ms; }
 
 body {
   background: var(--color-bg-page);
   color: var(--color-brand-black);
   font-family: var(--font-body);
-  overflow-x: hidden;
 }

@@ -27,21 +27,21 @@ export default function Navbar() {
       <nav className={`
         flex items-center justify-between px-6 py-3 rounded-full transition-all duration-500
         ${scrolled 
-          ? 'bg-white/90 backdrop-blur-xl shadow-2xl w-full max-w-5xl border border-gray-100/50' 
-          : 'bg-white/70 backdrop-blur-lg shadow-lg w-full max-w-6xl border border-white/20'}
+          ? 'bg-white/95 backdrop-blur-xl shadow-xl w-full max-w-5xl border border-gray-200' 
+          : 'bg-white/80 backdrop-blur-lg shadow-lg w-full max-w-6xl border border-white/50'}
       `}>
         
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 group">
-          <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-brand-blue to-brand-green flex items-center justify-center text-white font-bold text-xl shadow-lg group-hover:scale-110 transition-transform">
+          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-brand-orange to-brand-red flex items-center justify-center text-white font-bold text-xl shadow-md group-hover:rotate-12 transition-transform">
             C
           </div>
           <span className="font-heading font-bold text-xl tracking-tight text-brand-black hidden sm:block">
-            Cathy<span className="text-brand-blue">Club</span>.
+            Cathy<span className="text-brand-orange">Club</span>.
           </span>
         </Link>
 
-        {/* Links (Desktop) */}
+        {/* Links */}
         <div className="hidden md:flex items-center gap-1 bg-gray-100/50 p-1.5 rounded-full">
           {navLinks.map((link) => {
             const isActive = pathname === link.href;
@@ -52,8 +52,8 @@ export default function Navbar() {
                 className={`
                   px-5 py-2 rounded-full text-sm font-medium transition-all duration-300
                   ${isActive 
-                    ? 'bg-white text-brand-blue shadow-sm scale-105' 
-                    : 'text-gray-500 hover:text-brand-black hover:bg-gray-200/50'}
+                    ? 'bg-brand-black text-white shadow-md' 
+                    : 'text-gray-500 hover:text-brand-black hover:bg-white'}
                 `}
               >
                 {link.name}
@@ -62,12 +62,12 @@ export default function Navbar() {
           })}
         </div>
 
-        {/* CTA Button */}
+        {/* Button */}
         <Link 
           href="/login" 
-          className="px-6 py-2.5 rounded-full bg-brand-black text-white text-sm font-bold hover:bg-brand-blue hover:shadow-lg hover:shadow-brand-blue/30 hover:-translate-y-0.5 transition-all duration-300"
+          className="px-6 py-2.5 rounded-full bg-brand-orange text-white text-sm font-bold hover:bg-brand-red hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
         >
-          Login
+          Log In
         </Link>
 
       </nav>
