@@ -1,72 +1,60 @@
-// src/app/contact/page.tsx
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 export default function ContactPage() {
   return (
-    <main className="flex flex-col min-h-screen bg-gray-50 font-body">
+    <main className="min-h-screen bg-gray-50">
       <Navbar />
 
-      {/* Header */}
-      <section className="bg-white py-16 border-b border-gray-100">
-        <div className="container mx-auto px-6 text-center">
-          <h1 className="text-4xl font-bold text-primary font-heading mb-4">
-            Contact Us
-          </h1>
-          <p className="text-textGray max-w-xl mx-auto">
-            มีคำถามเกี่ยวกับคอร์สเรียน หรือต้องการคำปรึกษา? 
-            ทีมงาน Cathy Bilingual Club พร้อมดูแลคุณ
-          </p>
-        </div>
-      </section>
-
-      {/* Contact Info Section (Center) */}
-      <section className="py-16 container mx-auto px-6">
-        <div className="max-w-3xl mx-auto"> 
+      <section className="pt-40 pb-24 px-6">
+        <div className="max-w-4xl mx-auto bg-white rounded-[3rem] p-8 md:p-16 shadow-2xl shadow-gray-200/50 animate-fade-up">
           
-          <div className="bg-white p-10 rounded-2xl shadow-sm border border-gray-100 text-center">
-            <h3 className="text-2xl font-bold text-textDark font-heading mb-8">Get in Touch</h3>
-            
-            <div className="space-y-8">
-              {/* Office Address */}
-              <div className="flex flex-col md:flex-row items-center gap-6 p-4 rounded-xl hover:bg-gray-50 transition">
-                <div className="w-14 h-14 bg-blue-50 rounded-full flex items-center justify-center text-primary flex-shrink-0">
-                  <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                </div>
-                <div className="text-center md:text-left">
-                  <h4 className="text-lg font-bold text-textDark">Our Office</h4>
-                  <p className="text-textGray mt-1">
-                    123 Education Tower, Floor 15<br />
-                    Phaya Thai Road, Bangkok 10400
-                  </p>
-                </div>
-              </div>
+          <div className="text-center mb-12">
+            <h1 className="text-4xl md:text-5xl font-heading font-extrabold mb-4 text-brand-black">
+              Let's <span className="text-brand-blue">Talk.</span>
+            </h1>
+            <p className="text-gray-500 text-lg">
+              มีคำถามหรือข้อสงสัย? เราพร้อมช่วยเหลือคุณเสมอ
+            </p>
+          </div>
 
-              {/* Email */}
-              <div className="flex flex-col md:flex-row items-center gap-6 p-4 rounded-xl hover:bg-gray-50 transition">
-                <div className="w-14 h-14 bg-blue-50 rounded-full flex items-center justify-center text-primary flex-shrink-0">
-                  <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                </div>
-                <div className="text-center md:text-left">
-                  <h4 className="text-lg font-bold text-textDark">Email</h4>
-                  <p className="text-textGray mt-1">hello@cathybilingual.com</p>
-                  <p className="text-textGray">support@cathybilingual.com</p>
-                </div>
-              </div>
-
-              {/* Phone */}
-              <div className="flex flex-col md:flex-row items-center gap-6 p-4 rounded-xl hover:bg-gray-50 transition">
-                <div className="w-14 h-14 bg-blue-50 rounded-full flex items-center justify-center text-primary flex-shrink-0">
-                  <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
-                </div>
-                <div className="text-center md:text-left">
-                  <h4 className="text-lg font-bold text-textDark">Phone</h4>
-                  <p className="text-textGray mt-1">02-123-4567 (Main)</p>
-                  <p className="text-textGray">089-999-9999 (Hotline)</p>
-                </div>
-              </div>
-
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Phone */}
+            <div className="text-center p-6 rounded-3xl bg-soft-blue hover:-translate-y-2 transition-transform duration-300">
+               <div className="w-12 h-12 mx-auto bg-brand-blue text-white rounded-full flex items-center justify-center text-xl mb-4">📞</div>
+               <h3 className="font-bold text-lg mb-2">Call Us</h3>
+               <p className="text-gray-600 text-sm">02-123-4567</p>
+               <p className="text-gray-400 text-xs mt-1">Mon-Fri, 9am-6pm</p>
             </div>
+
+            {/* Email */}
+            <div className="text-center p-6 rounded-3xl bg-soft-green hover:-translate-y-2 transition-transform duration-300">
+               <div className="w-12 h-12 mx-auto bg-brand-green text-white rounded-full flex items-center justify-center text-xl mb-4">✉️</div>
+               <h3 className="font-bold text-lg mb-2">Email Us</h3>
+               <p className="text-gray-600 text-sm">hello@cathyclub.com</p>
+               <p className="text-gray-400 text-xs mt-1">Reply within 24h</p>
+            </div>
+
+            {/* Location */}
+            <div className="text-center p-6 rounded-3xl bg-soft-red hover:-translate-y-2 transition-transform duration-300">
+               <div className="w-12 h-12 mx-auto bg-brand-red text-white rounded-full flex items-center justify-center text-xl mb-4">📍</div>
+               <h3 className="font-bold text-lg mb-2">Visit Us</h3>
+               <p className="text-gray-600 text-sm">123 Education Tower</p>
+               <p className="text-gray-400 text-xs mt-1">Bangkok, Thailand</p>
+            </div>
+          </div>
+
+          {/* Simple Form */}
+          <div className="mt-16 pt-12 border-t border-gray-100">
+             <h3 className="text-2xl font-bold text-center mb-8">Send a Message</h3>
+             <form className="max-w-lg mx-auto space-y-4">
+                <input type="text" placeholder="Your Name" className="w-full px-6 py-4 rounded-full bg-gray-50 border border-gray-100 focus:outline-none focus:border-brand-blue focus:bg-white transition-all" />
+                <input type="email" placeholder="Your Email" className="w-full px-6 py-4 rounded-full bg-gray-50 border border-gray-100 focus:outline-none focus:border-brand-blue focus:bg-white transition-all" />
+                <textarea rows={4} placeholder="How can we help?" className="w-full px-6 py-4 rounded-3xl bg-gray-50 border border-gray-100 focus:outline-none focus:border-brand-blue focus:bg-white transition-all resize-none"></textarea>
+                <button className="w-full py-4 bg-brand-black text-white rounded-full font-bold hover:bg-brand-blue hover:shadow-lg hover:shadow-brand-blue/30 transition-all duration-300">
+                   Send Message
+                </button>
+             </form>
           </div>
 
         </div>

@@ -1,7 +1,6 @@
-// src/components/CourseCard.tsx
 import Image from 'next/image';
 import Link from 'next/link';
-import { Course } from '@/data/courses'; // เรียกใช้ Interface ที่เราทำไว้
+import { Course } from '@/data/courses';
 
 interface CourseCardProps {
   course: Course;
@@ -9,46 +8,43 @@ interface CourseCardProps {
 
 export default function CourseCard({ course }: CourseCardProps) {
   return (
-    <div className="bg-white border border-gray-100 rounded-xl shadow-sm hover:shadow-lg transition duration-300 overflow-hidden group flex flex-col h-full">
-      {/* Image Area */}
-      <div className="relative h-48 w-full overflow-hidden bg-gray-200">
-        <Image
-          src={course.image}
-          alt={course.title}
-          fill
-          className="object-cover group-hover:scale-105 transition duration-500"
-        />
-        <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-primary shadow-sm">
-          {course.level}
-        </div>
-      </div>
-
-      {/* Content Area */}
-      <div className="p-6 flex flex-col flex-grow">
-        <span className="text-xs font-bold text-accent uppercase tracking-wide mb-2">
-          {course.category}
-        </span>
-        <h3 className="text-lg font-bold text-textDark mb-2 line-clamp-2">
-          {course.title}
-        </h3>
-        <p className="text-textGray text-sm mb-4 line-clamp-2 flex-grow">
-          {course.description}
-        </p>
-        
-        {/* Footer Area: Price & Button */}
-        <div className="mt-auto pt-4 border-t border-gray-100 flex items-center justify-between">
-          <div>
-             <span className="text-xs text-gray-400 block">Price</span>
-             <span className="text-primary font-bold text-xl">฿{course.price.toLocaleString()}</span>
+    <Link href={`/courses/${course.id}`} className="group block h-full">
+      <div className="bg-white rounded-[2rem] overflow-hidden border border-gray-100 shadow-sm hover:shadow-2xl hover:shadow-brand-blue/10 hover:-translate-y-2 transition-all duration-300 h-full flex flex-col">
+        {/* Image Area */}
+        <div className="relative h-56 w-full overflow-hidden">
+          <Image
+            src={course.image}
+            alt={course.title}
+            fill
+            className="object-cover group-hover:scale-110 transition-transform duration-700"
+          />
+          <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-brand-black shadow-sm">
+            {course.category}
           </div>
-          <Link 
-            href={`/courses/${course.id}`} 
-            className="px-4 py-2 bg-secondary text-white text-sm font-semibold rounded-lg hover:bg-primary transition"
-          >
-            View Details
-          </Link>
+        </div>
+
+        {/* Content */}
+        <div className="p-6 flex flex-col flex-grow">
+          <h3 className="text-xl font-bold font-heading text-brand-black mb-2 line-clamp-2 group-hover:text-brand-blue transition-colors">
+            {course.title}
+          </h3>
+          <p className="text-gray-500 text-sm mb-4 line-clamp-2 flex-grow">
+            {course.description}
+          </p>
+          
+          <div className="flex items-center justify-between mt-auto pt-4 border-t border-gray-50">
+            <div className="flex items-center gap-2">
+               <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-xs font-bold text-gray-600">
+                  {course.instructor.charAt(0)}
+               </div>
+               <span className="text-xs text-gray-500 font-medium">{course.instructor}</span>
+            </div>
+            <span className="text-lg font-bold text-brand-blue">
+              ฿{course.price.toLocaleString()}
+            </span>
+          </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
