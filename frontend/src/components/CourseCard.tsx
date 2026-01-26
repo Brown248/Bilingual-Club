@@ -1,12 +1,28 @@
+'use client'; 
+
 import Image from 'next/image';
 import Link from 'next/link';
 import { Course } from '@/data/courses';
+import { useCart } from '@/app/context/CartContext';
 
 interface CourseCardProps {
   course: Course;
 }
 
 export default function CourseCard({ course }: CourseCardProps) {
+  const { addToCart } = useCart();
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault(); // กันไม่ให้ Link ทำงาน (เดี๋ยวจะเด้งไปหน้ารายละเอียดแทน)
+    addToCart({
+        id: course.id,
+        title: course.title,
+        price: course.price,
+        image: course.image,
+        type: 'course'
+    });
+  };
+
   return (
     <Link href={`/courses/${course.id}`} className="group block h-full">
       <div className="bg-white rounded-[2rem] overflow-hidden border border-gray-100 shadow-sm hover:shadow-2xl hover:shadow-brand-orange/10 hover:-translate-y-2 transition-all duration-300 h-full flex flex-col">
@@ -30,8 +46,8 @@ export default function CourseCard({ course }: CourseCardProps) {
             {course.description}
           </p>
           
-          <div className="flex items-center justify-between mt-auto pt-4 border-t border-gray-50">
-            <div className="flex items-center gap-2">
+          <div className="flex items-center justify-between pt-4 border-t border-gray-50 mb-4">
+             <div className="flex items-center gap-2">
                <div className="w-8 h-8 rounded-full bg-soft-orange flex items-center justify-center text-xs font-bold text-brand-orange">
                   {course.instructor ? course.instructor.charAt(0) : 'T'}
                </div>
@@ -40,6 +56,25 @@ export default function CourseCard({ course }: CourseCardProps) {
             <span className="text-lg font-bold text-brand-black">
               ฿{course.price.toLocaleString()}
             </span>
+          </div>
+
+          {/* Buttons Area */}
+          <div className="grid grid-cols-2 gap-3 mt-auto">
+             <button 
+                onClick={handleAddToCart}
+                className="py-2.5 rounded-full border border-gray-200 text-sm font-bold text-gray-600 hover:bg-gray-50 hover:text-brand-black transition z-10"
+             >
+                Add to Cart
+             </button>
+             <button 
+                onClick={(e) => {
+                    e.preventDefault();
+                    alert('ไปหน้าจ่ายเงินทันที!');
+                }}
+                className="py-2.5 rounded-full bg-brand-black text-white text-sm font-bold hover:bg-brand-orange hover:shadow-lg transition z-10"
+             >
+                Buy Now
+             </button>
           </div>
         </div>
       </div>
