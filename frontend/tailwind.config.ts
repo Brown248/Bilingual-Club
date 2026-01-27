@@ -11,13 +11,13 @@ const config: Config = {
       colors: {
         brand: {
           orange: {
-            DEFAULT: '#FF8800', // ส้มสด
-            light:   '#FFAB40', // ส้มอ่อน (ไล่สี)
-            dark:    '#FF6D00', // ส้มเข้ม (ไล่สี)
+            DEFAULT: '#FF8800',
+            light:   '#FFAB40',
+            dark:    '#FF6D00',
           },
-          green:  '#00E676', // เขียว
-          yellow: '#FFD600', // เหลือง
-          black:  '#212121', // ดำ (ตัวอักษร)
+          green:  '#00E676',
+          yellow: '#FFD600',
+          black:  '#212121',
           white:  '#FFFFFF',
           gray:   '#FAFAFA',
         },
@@ -29,7 +29,6 @@ const config: Config = {
       boxShadow: {
         'soft': '0 4px 20px -2px rgba(255, 136, 0, 0.2)',
       },
-      // เพิ่ม Animation กลับเข้าไปใน Config ด้วยเพื่อให้ Class ทำงาน
       animation: {
         'fade-in': 'fadeIn 0.8s ease-out forwards',
         'slide-up': 'slideUp 0.8s ease-out forwards',
