@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import api from '@/lib/api'; // ✅ เรียกใช้ API
 
 interface Ebook {
   id: number;
@@ -9,16 +10,36 @@ interface Ebook {
   price: number;
   author: string;
   image: string;
+  file_url?: string;
+  description?: string;
 }
 
 export default function AdminEbooksPage() {
-  // ✅ 1. เปลี่ยนเป็น Array ว่าง
   const [ebooks, setEbooks] = useState<Ebook[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
-  const [formData, setFormData] = useState({ title: '', price: 0, author: '', image: '' });
+  const [formData, setFormData] = useState({ title: '', price: 0, author: '', image: '', file_url: '' });
 
+  // --- 🔄 1. Fetch Data ---
+  const fetchEbooks = async () => {
+    try {
+      const res = await api.get('/api/v1/ebooks/');
+      setEbooks(res.data);
+    } catch (error) {
+      console.error("Failed to fetch ebooks:", error);
+      alert("โหลดข้อมูล E-Books ไม่สำเร็จ");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchEbooks();
+  }, []);
+
+  // --- 📸 Image Upload (Base64) ---
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -28,32 +49,55 @@ export default function AdminEbooksPage() {
     }
   };
 
-  const handleDelete = (id: number) => {
-    if (confirm("ลบ E-book เล่มนี้?")) setEbooks(ebooks.filter(e => e.id !== id));
+  // --- 🗑️ Delete ---
+  const handleDelete = async (id: number) => {
+    if (confirm("ลบ E-book เล่มนี้? (กู้คืนไม่ได้)")) {
+      try {
+        await api.delete(`/api/v1/ebooks/${id}`);
+        setEbooks(ebooks.filter(e => e.id !== id));
+      } catch (error) {
+        alert("ลบไม่สำเร็จ: " + error);
+      }
+    }
   };
 
   const handleOpenAdd = () => {
     setEditingId(null);
-    setFormData({ title: '', price: 0, author: '', image: '' });
+    setFormData({ title: '', price: 0, author: '', image: '', file_url: '' });
     setIsModalOpen(true);
   };
 
   const handleOpenEdit = (ebook: Ebook) => {
     setEditingId(ebook.id);
-    setFormData({ ...ebook });
+    setFormData({ 
+        title: ebook.title, 
+        price: ebook.price, 
+        author: ebook.author, 
+        image: ebook.image,
+        file_url: ebook.file_url || '' 
+    });
     setIsModalOpen(true);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // --- 💾 Submit (Create / Update) ---
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (editingId) {
-      setEbooks(ebooks.map(e => e.id === editingId ? { ...e, ...formData, id: editingId } : e));
-    } else {
-      const newId = ebooks.length > 0 ? Math.max(...ebooks.map(e => e.id)) + 1 : 1;
-      const finalImage = formData.image || 'https://placehold.co/400x550/gray/white?text=No+Cover';
-      setEbooks([...ebooks, { ...formData, image: finalImage, id: newId }]);
+    try {
+      if (editingId) {
+        await api.put(`/api/v1/ebooks/${editingId}`, formData);
+      } else {
+        const payload = {
+            ...formData,
+            image: formData.image || 'https://placehold.co/400x550/gray/white?text=No+Cover'
+        };
+        await api.post('/api/v1/ebooks/', payload);
+      }
+      setIsModalOpen(false);
+      fetchEbooks(); // Refresh data
+    } catch (error) {
+      console.error(error);
+      alert("บันทึกไม่สำเร็จ");
     }
-    setIsModalOpen(false);
   };
 
   return (
@@ -69,16 +113,20 @@ export default function AdminEbooksPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {ebooks.length === 0 ? (
-            <div className="col-span-4 text-center py-20 text-gray-400">ยังไม่มีหนังสือ (รอเชื่อมต่อ Backend)</div>
+        {loading ? (
+             <div className="col-span-4 text-center py-20">⏳ Loading E-books...</div>
+        ) : ebooks.length === 0 ? (
+            <div className="col-span-4 text-center py-20 text-gray-400">ยังไม่มีหนังสือในระบบ</div>
         ) : (
             ebooks.map((ebook) => (
             <div key={ebook.id} className="group relative bg-gray-50 rounded-3xl p-4 border border-gray-100 hover:shadow-xl transition-all duration-300">
                 <div className="relative aspect-[3/4] w-full rounded-2xl overflow-hidden mb-4 shadow-sm bg-white">
-                    <Image src={ebook.image} alt={ebook.title} fill className="object-cover" />
+                    {ebook.image && <Image src={ebook.image} alt={ebook.title} fill className="object-cover" unoptimized />}
+                    
+                    {/* Hover Actions */}
                     <div className="absolute inset-0 bg-black/60 flex items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <button onClick={() => handleOpenEdit(ebook)} className="w-10 h-10 bg-white rounded-full flex items-center justify-center hover:bg-blue-50 text-blue-600">✏️</button>
-                        <button onClick={() => handleDelete(ebook.id)} className="w-10 h-10 bg-white rounded-full flex items-center justify-center hover:bg-red-50 text-red-600">🗑️</button>
+                        <button onClick={() => handleOpenEdit(ebook)} className="w-10 h-10 bg-white rounded-full flex items-center justify-center hover:bg-blue-50 text-blue-600 shadow-lg">✏️</button>
+                        <button onClick={() => handleDelete(ebook.id)} className="w-10 h-10 bg-white rounded-full flex items-center justify-center hover:bg-red-50 text-red-600 shadow-lg">🗑️</button>
                     </div>
                 </div>
                 <h3 className="font-bold text-brand-black line-clamp-1">{ebook.title}</h3>
@@ -89,19 +137,31 @@ export default function AdminEbooksPage() {
         )}
       </div>
 
-      {/* Modal (ส่วนนี้คงเดิม) */}
+      {/* Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-          <div className="bg-white w-full max-w-md rounded-[2rem] p-8 shadow-2xl animate-scale-in">
+          <div className="bg-white w-full max-w-md rounded-[2rem] p-8 shadow-2xl animate-scale-in max-h-[90vh] overflow-y-auto">
             <h2 className="text-2xl font-bold mb-6 text-brand-black">{editingId ? 'Edit E-Book' : 'New E-Book'}</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div><label className="block text-sm font-bold text-gray-700 mb-1">Title</label><input required type="text" value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} className="w-full px-4 py-2 rounded-xl bg-gray-50 border border-gray-200 focus:border-brand-orange outline-none" /></div>
+              
               <div className="grid grid-cols-2 gap-4">
                 <div><label className="block text-sm font-bold text-gray-700 mb-1">Price</label><input required type="number" value={formData.price} onChange={e => setFormData({...formData, price: Number(e.target.value)})} className="w-full px-4 py-2 rounded-xl bg-gray-50 border border-gray-200 focus:border-brand-orange outline-none" /></div>
                 <div><label className="block text-sm font-bold text-gray-700 mb-1">Author</label><input required type="text" value={formData.author} onChange={e => setFormData({...formData, author: e.target.value})} className="w-full px-4 py-2 rounded-xl bg-gray-50 border border-gray-200 focus:border-brand-orange outline-none" /></div>
               </div>
-              <div><label className="block text-sm font-bold text-gray-700 mb-1">Cover Image</label><input type="file" accept="image/*" onChange={handleImageUpload} className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200"/></div>
-              <div className="flex gap-3 mt-6"><button type="button" onClick={() => setIsModalOpen(false)} className="flex-1 py-3 rounded-xl bg-gray-100 hover:bg-gray-200 font-bold text-gray-600">Cancel</button><button type="submit" className="flex-1 py-3 rounded-xl bg-brand-orange text-white hover:bg-brand-red font-bold shadow-md">Save</button></div>
+
+              <div><label className="block text-sm font-bold text-gray-700 mb-1">PDF / File URL</label><input type="text" placeholder="https://..." value={formData.file_url} onChange={e => setFormData({...formData, file_url: e.target.value})} className="w-full px-4 py-2 rounded-xl bg-gray-50 border border-gray-200 focus:border-brand-orange outline-none" /></div>
+              
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-1">Cover Image</label>
+                <input type="file" accept="image/*" onChange={handleImageUpload} className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200"/>
+                {formData.image && <div className="mt-2"><img src={formData.image} alt="Preview" className="h-24 object-contain border border-gray-200 rounded-lg" /></div>}
+              </div>
+
+              <div className="flex gap-3 mt-6 pt-4 border-t border-gray-100">
+                <button type="button" onClick={() => setIsModalOpen(false)} className="flex-1 py-3 rounded-xl bg-gray-100 hover:bg-gray-200 font-bold text-gray-600">Cancel</button>
+                <button type="submit" className="flex-1 py-3 rounded-xl bg-brand-orange text-white hover:bg-brand-red font-bold shadow-md">Save</button>
+              </div>
             </form>
           </div>
         </div>

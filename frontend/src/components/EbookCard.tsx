@@ -1,68 +1,57 @@
-'use client'; // ต้องมีเพราะใช้ onClick
+'use client';
 
 import Image from 'next/image';
-import { Ebook } from '@/data/ebooks';
-import { useCart } from '@/context/CartContext'; // Import Hook
+import { useCart } from '@/context/CartContext';
 
+// ✅ เพิ่ม id: number; เข้าไปใน interface
 interface EbookCardProps {
-  ebook: Ebook;
+  id: number; 
+  title: string;
+  price: number;
+  author: string;
+  image: string;
 }
 
-export default function EbookCard({ ebook }: EbookCardProps) {
-  const { addToCart } = useCart(); // เรียกใช้ฟังก์ชัน
+export default function EbookCard({ id, title, price, author, image }: EbookCardProps) {
+  const { addToCart } = useCart();
 
   const handleAddToCart = () => {
     addToCart({
-        id: ebook.id,
-        title: ebook.title,
-        price: ebook.price,
-        image: ebook.image,
-        type: 'ebook'
+      id: id.toString(), // ✅ ส่ง id จริงเข้าตะกร้า
+      title,
+      price,
+      image,
+      type: 'ebook'
     });
+    alert(`Added "${title}" to cart!`);
   };
 
   return (
-    <div className="group bg-white rounded-[2rem] border border-gray-100 p-4 hover:border-brand-yellow/50 transition-all duration-300 hover:shadow-xl hover:shadow-brand-yellow/10 flex flex-col h-full">
-      <div className="relative aspect-[3/4] w-full rounded-2xl overflow-hidden mb-4 bg-soft-yellow">
-        <Image
-          src={ebook.image}
-          alt={ebook.title}
-          fill
-          className="object-cover group-hover:scale-105 transition-transform duration-500"
+    <div className="group relative bg-white rounded-[2rem] p-4 border border-gray-100 hover:shadow-xl transition-all duration-300">
+      <div className="relative aspect-[3/4] w-full rounded-2xl overflow-hidden mb-4 shadow-sm bg-gray-200">
+        <Image 
+            src={image} 
+            alt={title} 
+            fill 
+            className="object-cover group-hover:scale-105 transition-transform duration-500" 
+            unoptimized // รองรับรูปจาก Backend
         />
-        <div className="absolute bottom-3 right-3 bg-brand-black/80 backdrop-blur text-white text-xs font-bold px-3 py-1 rounded-full">
-          PDF
-        </div>
-      </div>
-
-      <div className="px-2 flex-grow">
-        <span className="text-xs font-bold text-brand-orange uppercase tracking-wider">{ebook.category}</span>
-        <h3 className="text-lg font-bold text-brand-black mt-1 mb-2 leading-tight group-hover:text-brand-orange transition-colors">
-            {ebook.title}
-        </h3>
-        <p className="text-sm text-gray-500 mb-4 line-clamp-2">{ebook.description}</p>
-      </div>
-      
-      {/* Price & Buttons */}
-      <div className="mt-auto px-2">
-        <div className="text-xl font-bold text-brand-black mb-3">฿{ebook.price.toLocaleString()}</div>
         
-        <div className="grid grid-cols-2 gap-2">
-            {/* Add to Cart */}
+        {/* Overlay Button */}
+        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
             <button 
                 onClick={handleAddToCart}
-                className="py-2 rounded-full border border-gray-200 text-sm font-bold hover:bg-gray-50 text-gray-600 transition"
+                className="bg-brand-orange text-white px-6 py-2 rounded-full font-bold transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 shadow-lg hover:bg-brand-red"
             >
                 Add to Cart
             </button>
-            {/* Buy Now */}
-            <button 
-                onClick={() => alert('ไปหน้าจ่ายเงินทันที! (Mockup)')}
-                className="py-2 rounded-full bg-brand-black text-white text-sm font-bold hover:bg-brand-orange transition shadow-md"
-            >
-                Buy Now
-            </button>
         </div>
+      </div>
+      
+      <div className="space-y-1">
+        <h3 className="font-heading font-bold text-brand-black text-lg leading-tight line-clamp-1">{title}</h3>
+        <p className="text-sm text-gray-500">by {author}</p>
+        <div className="text-xl font-bold text-brand-orange">฿{price.toLocaleString()}</div>
       </div>
     </div>
   );
