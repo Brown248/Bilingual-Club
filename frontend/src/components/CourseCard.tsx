@@ -4,7 +4,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useCart } from '@/context/CartContext';
 
-// ✅ เพิ่ม id: number; เข้าไปใน interface
 interface CourseCardProps {
   id: number;
   title: string;
@@ -19,37 +18,33 @@ export default function CourseCard({ id, title, description, price, image, categ
   const { addToCart } = useCart();
 
   const handleAddToCart = (e: React.MouseEvent) => {
-    e.preventDefault(); // ป้องกันไม่ให้กดแล้วเด้งไปหน้า Detail
+    e.preventDefault();
     addToCart({
-      id: id.toString(),
+      id: id,  // ✅ แก้ตรงนี้: ไม่ต้องมี .toString() แล้ว (ส่งเป็นตัวเลขเลย)
       title,
       price,
       image,
-      type: 'course'
+      type: 'course' as const // ✅ เพิ่ม as const เพื่อความชัวร์
     });
     alert(`Added "${title}" to cart!`);
   };
 
   return (
-    // ✅ ใช้ id สร้างลิงก์ไปหน้า Detail (/courses/1, /courses/2)
     <Link href={`/courses/${id}`} className="group block h-full">
       <div className="bg-white rounded-[2rem] overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 h-full flex flex-col">
-        
-        {/* Image Section */}
         <div className="relative h-56 w-full bg-gray-200 overflow-hidden">
           <Image 
             src={image} 
             alt={title} 
             fill 
             className="object-cover group-hover:scale-110 transition-transform duration-500"
-            unoptimized // ใช้สำหรับรูปจาก URL ภายนอก (Backend)
+            unoptimized 
           />
           <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-brand-black shadow-sm">
             {category}
           </div>
         </div>
 
-        {/* Content Section */}
         <div className="p-6 flex flex-col flex-grow">
           <div className="flex items-center gap-2 mb-3">
              <div className="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center text-[10px] font-bold text-gray-500">

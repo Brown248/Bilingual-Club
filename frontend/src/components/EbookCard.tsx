@@ -3,7 +3,6 @@
 import Image from 'next/image';
 import { useCart } from '@/context/CartContext';
 
-// ✅ เพิ่ม id: number; เข้าไปใน interface
 interface EbookCardProps {
   id: number; 
   title: string;
@@ -17,11 +16,11 @@ export default function EbookCard({ id, title, price, author, image }: EbookCard
 
   const handleAddToCart = () => {
     addToCart({
-      id: id.toString(), // ✅ ส่ง id จริงเข้าตะกร้า
+      id: id, // ✅ แก้ตรงนี้: ส่งเป็นตัวเลข (ไม่ต้องมี .toString())
       title,
       price,
       image,
-      type: 'ebook'
+      type: 'ebook' as const
     });
     alert(`Added "${title}" to cart!`);
   };
@@ -34,10 +33,9 @@ export default function EbookCard({ id, title, price, author, image }: EbookCard
             alt={title} 
             fill 
             className="object-cover group-hover:scale-105 transition-transform duration-500" 
-            unoptimized // รองรับรูปจาก Backend
+            unoptimized 
         />
         
-        {/* Overlay Button */}
         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
             <button 
                 onClick={handleAddToCart}
