@@ -4,30 +4,27 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { useCart } from '@/context/CartContext';
-import Cookies from 'js-cookie'; // ✅ Import นี้
+import Cookies from 'js-cookie'; 
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
-  const { cartCount } = useCart();
+  const { cartCount } = useCart(); // ✅ ตอนนี้ใช้ได้แล้ว เพราะมี Provider ครอบจาก layout.tsx
 
-  // เช็คสถานะล็อกอิน
   useEffect(() => {
-    // เช็คทั้ง localStorage และ Cookie เพื่อความชัวร์
     const token = localStorage.getItem('access_token');
     setIsLoggedIn(!!token);
   }, [pathname]);
 
-  // ฟังก์ชัน Logout
   const handleLogout = () => {
     if (confirm("คุณต้องการออกจากระบบใช่หรือไม่?")) {
-      localStorage.removeItem('access_token'); // ลบในเครื่อง
-      Cookies.remove('access_token'); // ✅ ลบ Cookie (สำคัญมากสำหรับ Middleware)
+      localStorage.removeItem('access_token'); 
+      Cookies.remove('access_token'); // ✅ ลบ Cookie ออก
       setIsLoggedIn(false);
-      router.push('/'); 
-      window.location.reload(); // รีเฟรชให้สะอาด
+      router.push('/');
+      window.location.reload(); 
     }
   };
 
@@ -96,7 +93,7 @@ export default function Navbar() {
                 )}
             </Link>
 
-            {/* ✅ ปุ่ม Login / Logout */}
+            {/* Login / Logout Button */}
             {isLoggedIn ? (
               <button 
                 onClick={handleLogout}

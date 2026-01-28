@@ -1,12 +1,11 @@
 'use client';
 
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+// ❌ ลบ import Navbar, Footer ออก (Layout จัดการให้แล้ว)
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import api from "@/lib/api";
-import Cookies from 'js-cookie'; // ✅ 1. เพิ่ม Import นี้
+import Cookies from 'js-cookie'; // ✅ อย่าลืมติดตั้ง npm install js-cookie
 
 export default function LoginPage() {
   const router = useRouter();
@@ -29,12 +28,11 @@ export default function LoginPage() {
 
       const { access_token } = response.data;
 
-      // ✅ 2. บันทึกลง localStorage (เหมือนเดิม)
       localStorage.setItem("access_token", access_token);
       localStorage.setItem("cathy_role", "admin");
-
-      // ✅ 3. บันทึกลง Cookie (เพิ่มใหม่ เพื่อให้ Middleware เห็น)
-      Cookies.set("access_token", access_token, { expires: 1 }); // หมดอายุใน 1 วัน
+      
+      // ✅ บันทึก Cookie สำหรับ Middleware
+      Cookies.set("access_token", access_token, { expires: 1 });
 
       setTimeout(() => {
         router.push("/admin");
@@ -48,19 +46,16 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="min-h-screen bg-gray-50 font-body flex flex-col relative overflow-hidden">
-      <Navbar />
-
-      {/* --- 🎭 Background Animations --- */}
+    <div className="min-h-screen bg-gray-50 flex flex-col relative overflow-hidden">
+      
+      {/* Background Animations */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-brand-orange/10 rounded-full blur-[100px] animate-float"></div>
         <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-blue-400/10 rounded-full blur-[120px] animate-float-delayed"></div>
       </div>
 
-      {/* ✅ ปรับตรงนี้: เพิ่ม min-h-screen และลบ pt-24 ออก เพื่อให้ Flex จัดกลางหน้าจอจริงๆ */}
-      <section className="flex-grow flex items-center justify-center px-6 z-10 min-h-screen py-20">
+      <section className="flex-grow flex items-center justify-center px-6 z-10 py-20">
         
-        {/* Card Container */}
         <div className="w-full max-w-md bg-white/80 backdrop-blur-xl p-10 md:p-12 rounded-[2.5rem] shadow-2xl border border-white/50 animate-fade-in-up relative">
           
           <div className="text-center mb-10">
@@ -124,8 +119,6 @@ export default function LoginPage() {
 
         </div>
       </section>
-
-      <Footer />
-    </main>
+    </div>
   );
 }
