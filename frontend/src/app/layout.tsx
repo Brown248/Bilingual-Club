@@ -1,28 +1,47 @@
-import type { Metadata } from "next";
-import { Inter, Poppins } from "next/font/google";
-import "./globals.css";
-import { CartProvider } from "@/context/CartContext"; // 1. Import มา
+import './globals.css';
+import { Kanit, Sarabun } from 'next/font/google';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
+// ✅ 1. เพิ่มบรรทัดนี้เพื่อเรียกใช้ระบบตะกร้า
+import { CartProvider } from '@/context/CartContext'; 
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const poppins = Poppins({ subsets: ["latin"], weight: ["400", "600", "700"], variable: "--font-poppins" });
+const kanit = Kanit({
+  weight: ['400', '700'],
+  subsets: ['thai', 'latin'],
+  variable: '--font-heading',
+  display: 'swap',
+});
 
-export const metadata: Metadata = {
-  title: "Cathy Bilingual Club",
-  description: "Learn English & Chinese with Cathy experts.",
+const sarabun = Sarabun({
+  weight: ['400', '500', '700'],
+  subsets: ['thai', 'latin'],
+  variable: '--font-body',
+  display: 'swap',
+});
+
+export const metadata = {
+  title: 'Bilingual Club',
+  description: 'Learn English with fun!',
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en">
-      <body className={`${inter.variable} ${poppins.variable} font-sans antialiased`}>
-        {/* 2. ครอบ CartProvider ไว้ตรงนี้ */}
+    <html lang="th" className={`${kanit.variable} ${sarabun.variable}`}>
+      <body className="bg-white text-brand-black font-body flex flex-col min-h-screen">
+        
+        {/* ✅ 2. เอา CartProvider มาครอบทุกอย่างไว้ใน Body */}
         <CartProvider>
-          {children}
+          <Navbar />
+          <div className="flex-grow">
+            {children}
+          </div>
+          <Footer />
         </CartProvider>
+        
       </body>
     </html>
   );

@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import api from "@/lib/api";
+import Cookies from 'js-cookie'; // ✅ 1. เพิ่ม Import นี้
 
 export default function LoginPage() {
   const router = useRouter();
@@ -27,8 +28,13 @@ export default function LoginPage() {
       });
 
       const { access_token } = response.data;
+
+      // ✅ 2. บันทึกลง localStorage (เหมือนเดิม)
       localStorage.setItem("access_token", access_token);
       localStorage.setItem("cathy_role", "admin");
+
+      // ✅ 3. บันทึกลง Cookie (เพิ่มใหม่ เพื่อให้ Middleware เห็น)
+      Cookies.set("access_token", access_token, { expires: 1 }); // หมดอายุใน 1 วัน
 
       setTimeout(() => {
         router.push("/admin");

@@ -1,95 +1,67 @@
-'use client'; // ⚠️ ต้องเปลี่ยนเป็น Client Component เพื่อเช็ค LocalStorage
+'use client';
 
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from 'next/navigation';
+import Link from 'next/link';
+import Cookies from 'js-cookie';
 
-export default function AdminLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function AdminLayout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
   const router = useRouter();
-  const [isAuthorized, setIsAuthorized] = useState(false);
 
-  // --- 🛡️ Guard Logic: ตรวจคนเข้าใช้งาน ---
-  useEffect(() => {
-    // เช็คว่ามีตราประทับ 'admin' ในเครื่องไหม?
-    const role = localStorage.getItem("cathy_role");
-
-    if (role !== "admin") {
-      // ❌ ถ้าไม่มี: ดีดกลับไปหน้า Login
-      router.push("/login");
-    } else {
-      // ✅ ถ้ามี: อนุญาตให้ดูเนื้อหาได้
-      setIsAuthorized(true);
-    }
-  }, [router]);
-
-  // ฟังก์ชัน Logout
-  const handleLogout = () => {
-    localStorage.removeItem("cathy_role"); // ลบตราประทับ
-    router.push("/login"); // ดีดกลับหน้า login
-  };
-
-  // ถ้ายังเช็คไม่เสร็จ ห้ามโชว์เนื้อหา (ป้องกันภาพแวบ)
-  if (!isAuthorized) {
-    return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-brand-orange"></div>
-        </div>
-    );
-  }
+  // เมนู Admin
+  const menuItems = [
+    { name: 'Dashboard', href: '/admin', icon: '📊' },
+    { name: 'Courses', href: '/admin/courses', icon: '📚' },
+    { name: 'E-Books', href: '/admin/ebooks', icon: '📖' },
+    { name: 'Orders', href: '/admin/orders', icon: '🛍️' },
+  ];
 
   return (
-    <div className="flex min-h-screen bg-gray-100 font-body">
+    <div className="min-h-screen bg-gray-50 flex font-body">
       
-      {/* --- Sidebar --- */}
-      <aside className="w-64 bg-brand-black text-white flex-shrink-0 hidden md:flex flex-col justify-between fixed h-full">
-        <div>
-            <div className="p-6">
-            <div className="text-2xl font-bold font-heading">
-                Cathy<span className="text-brand-orange">Admin</span>
-            </div>
-            </div>
-            <nav className="mt-2 px-4 space-y-2">
-            <Link href="/admin" className="block px-4 py-3 rounded-xl hover:bg-gray-800 transition flex items-center gap-3">
-                <span>📊</span> Dashboard
-            </Link>
-            <Link href="/admin/courses" className="block px-4 py-3 rounded-xl hover:bg-gray-800 transition flex items-center gap-3">
-                <span>🎓</span> Courses
-            </Link>
-            <Link href="/admin/ebooks" className="block px-4 py-3 rounded-xl hover:bg-gray-800 transition flex items-center gap-3">
-                <span>📚</span> E-Books
-            </Link>
-            <Link href="/admin/orders" className="block px-4 py-3 rounded-xl hover:bg-gray-800 transition flex items-center gap-3">
-                <span>💰</span> Orders
-            </Link>
-            </nav>
+      {/* Sidebar (แถบเมนูซ้าย) */}
+      <aside className="w-64 bg-white border-r border-gray-100 fixed h-full z-10 hidden md:flex flex-col shadow-sm">
+        <div className="p-8">
+          <h1 className="text-2xl font-heading font-bold text-brand-orange mb-1">Admin Panel</h1>
+          <p className="text-xs text-gray-400">Manage your content</p>
         </div>
-
-        {/* Bottom Actions */}
-        <div className="p-4 border-t border-gray-800">
-            <Link href="/" className="block px-4 py-3 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800 transition mb-2 text-sm">
-              🏠 Back to Website
-            </Link>
-            <button 
-                onClick={handleLogout}
-                className="w-full px-4 py-3 rounded-xl bg-red-500/10 text-red-400 hover:bg-red-500 hover:text-white transition text-sm font-bold"
+        
+        <nav className="flex-1 px-4 space-y-2">
+          {menuItems.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-bold ${
+                pathname === item.href
+                  ? 'bg-brand-orange text-white shadow-md translate-x-1'
+                  : 'text-gray-500 hover:bg-orange-50 hover:text-brand-orange'
+              }`}
             >
-              Log Out
+              <span>{item.icon}</span>
+              {item.name}
+            </Link>
+          ))}
+        </nav>
+
+        {/* ปุ่ม Logout ใน Sidebar */}
+        <div className="p-4 border-t border-gray-100">
+            <button
+                onClick={() => {
+                    if(confirm('ยืนยันการออกจากระบบ?')) {
+                        localStorage.removeItem('access_token');
+                        Cookies.remove('access_token');
+                        router.push('/login');
+                    }
+                }}
+                className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl transition-all font-bold text-red-500 bg-red-50 hover:bg-red-100 hover:shadow-sm"
+            >
+                <span>🚪</span> Log Out
             </button>
         </div>
       </aside>
 
-      {/* --- Main Content --- */}
-      <main className="flex-1 p-8 md:ml-64">
-        {/* Mobile Header */}
-        <div className="md:hidden mb-6 flex justify-between items-center bg-white p-4 rounded-xl shadow-sm">
-           <span className="font-bold text-brand-black">CathyAdmin</span>
-           <button onClick={handleLogout} className="text-sm text-red-500 font-bold">Logout</button>
-        </div>
-
+      {/* Main Content (เนื้อหาขวา) */}
+      <main className="flex-1 md:ml-64 p-8 animate-fade-in">
         {children}
       </main>
     </div>
