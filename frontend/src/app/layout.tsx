@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Kanit, Sarabun } from "next/font/google";
 import "./globals.css";
-import MainLayout from "@/components/MainLayout"; // ✅ เรียกตัวที่เราเพิ่งสร้าง
+import MainLayout from "@/components/MainLayout"; // ✅ เรียกตัวคุมเกม
 
 const kanit = Kanit({
   weight: ['400', '700'],
@@ -30,7 +30,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${kanit.variable} ${sarabun.variable} font-body antialiased bg-gray-50`}>
-        {/* ✅ ใช้ MainLayout จัดการเงื่อนไข Admin/User */}
+        {/* ✅ ใช้ MainLayout ครอบทีเดียวจบ */}
         <MainLayout>
           {children}
         </MainLayout>

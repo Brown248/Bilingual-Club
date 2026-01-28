@@ -7,25 +7,21 @@ import { CartProvider } from '@/context/CartContext';
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  // เช็คว่าถ้าลิงก์ขึ้นต้นด้วย /admin ให้ถือว่าเป็นหน้าหลังบ้าน
-  const isAdmin = pathname.startsWith('/admin');
+  // ✅ เช็คดักไว้เลย: ถ้าเป็น admin หรือหน้า login ไม่ต้องโชว์ Navbar ของหน้าบ้าน
+  const isHiddenPage = pathname?.startsWith('/admin') || pathname === '/login';
 
   return (
-    // ✅ ย้าย CartProvider มาไว้ตรงนี้ เพื่อครอบคลุมทั้งหมด
     <CartProvider>
+      {/* ถ้าไม่ใช่หน้า Admin/Login ให้โชว์ Navbar */}
+      {!isHiddenPage && <Navbar />}
       
-      {/* ถ้าไม่ใช่ Admin ให้โชว์ Navbar */}
-      {!isAdmin && <Navbar />}
-      
-      {/* เนื้อหาหลักของหน้า */}
-      {/* ถ้าเป็นหน้า Admin เราลบ padding-top ออกเพื่อให้ Sidebar ชิดขอบ */}
-      <main className={!isAdmin ? "min-h-screen pt-24 pb-10" : "min-h-screen"}>
+      {/* ส่วนเนื้อหา (ถ้ามี Navbar ให้เว้นระยะด้านบน pt-24 แต่ถ้าไม่มีไม่ต้องเว้น) */}
+      <main className={!isHiddenPage ? "min-h-screen pt-24 pb-10" : "min-h-screen"}>
         {children}
       </main>
       
-      {/* ถ้าไม่ใช่ Admin ให้โชว์ Footer */}
-      {!isAdmin && <Footer />}
-
+      {/* ถ้าไม่ใช่หน้า Admin/Login ให้โชว์ Footer */}
+      {!isHiddenPage && <Footer />}
     </CartProvider>
   );
 }
