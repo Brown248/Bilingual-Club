@@ -59,7 +59,7 @@ export default function Footer() {
             <ul className="space-y-4 text-sm text-gray-500">
               <li className="flex items-center gap-3 group cursor-default">
                 <span className="w-8 h-8 rounded-full bg-orange-50 flex items-center justify-center text-brand-orange group-hover:bg-brand-orange group-hover:text-white transition-colors">📞</span>
-                <span>02-123-4567</span>
+                <span>093-130-5336</span>
               </li>
               <li className="flex items-center gap-3 group cursor-default">
                 <span className="w-8 h-8 rounded-full bg-orange-50 flex items-center justify-center text-brand-orange group-hover:bg-brand-orange group-hover:text-white transition-colors">✉️</span>
