@@ -1,52 +1,103 @@
 import Link from 'next/link';
 
 export default function Footer() {
+  // ข้อมูล Social Media และ Logo
+  const socialLinks = [
+    {
+      name: 'Facebook',
+      href: 'https://facebook.com',
+      icon: 'https://upload.wikimedia.org/wikipedia/commons/b/b9/2023_Facebook_icon.svg'
+    },
+    {
+      name: 'Instagram',
+      href: 'https://instagram.com',
+      icon: 'https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png'
+    },
+    {
+      name: 'Line',
+      href: 'https://line.me/R/ti/p/@280hhgup?ts=10151343&oat_content=url',
+      icon: 'https://upload.wikimedia.org/wikipedia/commons/4/41/LINE_logo.svg'
+    }
+  ];
+
   return (
-    <footer className="bg-brand-black text-white pt-20 pb-10 mt-10 rounded-t-[3rem]">
+    <footer className="bg-white border-t border-gray-100 pt-16 pb-8">
       <div className="container mx-auto px-6">
-        <div className="flex flex-col md:flex-row justify-between gap-12 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           
-          <div className="md:w-1/3">
-            <Link href="/" className="text-2xl font-bold font-heading mb-4 block">
-              Cathy<span className="text-brand-orange">Club</span>.
+          {/* Brand Column */}
+          <div className="col-span-1 md:col-span-1">
+            <Link href="/" className="flex items-center gap-3 mb-6 group">
+               <img 
+                src="/logo.png" 
+                alt="Cathy Bilingual Club Logo" 
+                className="w-12 h-12 object-contain group-hover:-rotate-12 transition-transform duration-300"
+              />
+              <span className="font-heading font-bold text-xl tracking-tight text-brand-black">
+                Cathy<span className="text-brand-orange">Club</span>.
+              </span>
             </Link>
-            <p className="text-gray-400 leading-relaxed mb-6">
-              เรียนรู้ภาษาด้วยความสนุกและพลังบวก สร้างอนาคตใหม่ไปกับเรา
+            <p className="text-gray-500 text-sm leading-relaxed mb-6">
+              Empowering your language skills with fun and effective learning methods. Join our community today!
             </p>
-            <div className="flex gap-4">
-               <div className="w-10 h-10 rounded-full bg-gray-800 hover:bg-brand-orange transition flex items-center justify-center cursor-pointer">FB</div>
-               <div className="w-10 h-10 rounded-full bg-gray-800 hover:bg-brand-red transition flex items-center justify-center cursor-pointer">IG</div>
-               <div className="w-10 h-10 rounded-full bg-gray-800 hover:bg-brand-yellow hover:text-black transition flex items-center justify-center cursor-pointer">TT</div>
-            </div>
+          </div>
+          
+          {/* Quick Links */}
+          <div>
+            <h4 className="font-bold text-brand-black mb-6">Quick Links</h4>
+            <ul className="space-y-3 text-sm text-gray-500">
+              <li><Link href="/courses" className="hover:text-brand-orange transition-colors">All Courses</Link></li>
+              <li><Link href="/ebook" className="hover:text-brand-orange transition-colors">E-Books</Link></li>
+              <li><Link href="/services" className="hover:text-brand-orange transition-colors">Services</Link></li>
+              <li><Link href="/contact" className="hover:text-brand-orange transition-colors">Contact Us</Link></li>
+            </ul>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-8 w-full md:w-2/3">
-            <div>
-              <h4 className="font-bold text-brand-yellow mb-4">Learn</h4>
-              <ul className="space-y-3 text-sm text-gray-400">
-                <li><Link href="/courses" className="hover:text-white transition">All Courses</Link></li>
-                <li><Link href="/ebook" className="hover:text-white transition">E-Books</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-bold text-brand-green mb-4">Support</h4>
-              <ul className="space-y-3 text-sm text-gray-400">
-                <li><Link href="/contact" className="hover:text-white transition">Contact Us</Link></li>
-                <li><Link href="/services" className="hover:text-white transition">Services</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-bold text-brand-red mb-4">Contact</h4>
-              <ul className="space-y-3 text-sm text-gray-400">
-                <li>Bangkok, Thailand</li>
-                <li>hello@cathyclub.com</li>
-              </ul>
+          {/* ✅ Contact: เหลือแค่ เบอร์, อีเมล, ไลน์ */}
+          <div>
+            <h4 className="font-bold text-brand-black mb-6">Contact</h4>
+            <ul className="space-y-4 text-sm text-gray-500">
+              <li className="flex items-center gap-3 group cursor-default">
+                <span className="w-8 h-8 rounded-full bg-orange-50 flex items-center justify-center text-brand-orange group-hover:bg-brand-orange group-hover:text-white transition-colors">📞</span>
+                <span>02-123-4567</span>
+              </li>
+              <li className="flex items-center gap-3 group cursor-default">
+                <span className="w-8 h-8 rounded-full bg-orange-50 flex items-center justify-center text-brand-orange group-hover:bg-brand-orange group-hover:text-white transition-colors">✉️</span>
+                <span>hello@bilingualclub.com</span>
+              </li>
+              <li className="flex items-center gap-3 group cursor-default">
+                <span className="w-8 h-8 rounded-full bg-green-50 flex items-center justify-center text-green-600 group-hover:bg-green-500 group-hover:text-white transition-colors font-bold">L</span>
+                <span>@cathy_club</span>
+              </li>
+            </ul>
+          </div>
+
+          {/* ✅ Follow Us: ใส่ Logo ของจริง */}
+          <div>
+            <h4 className="font-bold text-brand-black mb-6">Follow Us</h4>
+            <div className="flex gap-4">
+              {socialLinks.map((social) => (
+                <a 
+                  key={social.name} 
+                  href={social.href} 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-12 h-12 rounded-full bg-gray-50 flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-gray-100 hover:-translate-y-1"
+                  title={social.name}
+                >
+                  <img 
+                    src={social.icon} 
+                    alt={social.name} 
+                    className="w-6 h-6 object-contain"
+                  />
+                </a>
+              ))}
             </div>
           </div>
         </div>
 
-        <div className="border-t border-gray-800 pt-8 text-center text-sm text-gray-500">
-          &copy; {new Date().getFullYear()} Cathy Bilingual Club. All rights reserved.
+        <div className="border-t border-gray-100 pt-8 text-center text-sm text-gray-400">
+          <p>&copy; {new Date().getFullYear()} Cathy Bilingual Club. All rights reserved.</p>
         </div>
       </div>
     </footer>

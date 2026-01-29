@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Kanit, Sarabun } from "next/font/google";
 import "./globals.css";
-import MainLayout from "@/components/MainLayout"; // ✅ เรียกตัวคุมเกม
+import MainLayout from "@/components/MainLayout";
 
 const kanit = Kanit({
   weight: ['400', '700'],
@@ -20,6 +20,10 @@ const sarabun = Sarabun({
 export const metadata: Metadata = {
   title: "Cathy Bilingual Club",
   description: "Learn English & Chinese with Cathy experts.",
+  // ✅ เพิ่มบรรทัดนี้: เพื่อเปลี่ยนโลโก้ตรงแท็บ Browser
+  icons: {
+    icon: '/logo.png', // ดึงรูปจาก public/logo.png มาแสดง
+  },
 };
 
 export default function RootLayout({
@@ -30,7 +34,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${kanit.variable} ${sarabun.variable} font-body antialiased bg-gray-50`}>
-        {/* ✅ ใช้ MainLayout ครอบทีเดียวจบ */}
+        {/* ใช้ MainLayout จัดการ Navbar/Footer */}
         <MainLayout>
           {children}
         </MainLayout>

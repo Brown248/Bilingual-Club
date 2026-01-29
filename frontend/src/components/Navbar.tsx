@@ -11,7 +11,7 @@ export default function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
-  const { cartCount } = useCart(); // ✅ ตอนนี้ใช้ได้แล้ว เพราะมี Provider ครอบจาก layout.tsx
+  const { cartCount } = useCart();
 
   useEffect(() => {
     const token = localStorage.getItem('access_token');
@@ -21,7 +21,7 @@ export default function Navbar() {
   const handleLogout = () => {
     if (confirm("คุณต้องการออกจากระบบใช่หรือไม่?")) {
       localStorage.removeItem('access_token'); 
-      Cookies.remove('access_token'); // ✅ ลบ Cookie ออก
+      Cookies.remove('access_token');
       setIsLoggedIn(false);
       router.push('/');
       window.location.reload(); 
@@ -51,11 +51,14 @@ export default function Navbar() {
           : 'bg-white/80 backdrop-blur-lg shadow-lg w-full max-w-6xl border border-white/50'}
       `}>
         
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 group">
-          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-brand-orange to-brand-red flex items-center justify-center text-white font-bold text-xl shadow-md group-hover:rotate-12 transition-transform">
-            C
-          </div>
+        {/* ✅ LOGO: แก้ไขตรงนี้ครับ */}
+        <Link href="/" className="flex items-center gap-3 group">
+          {/* ลบตัว C เดิมออก แล้วใส่ <img> แทน */}
+          <img 
+            src="/logo.png" 
+            alt="Cathy Bilingual Club Logo" 
+            className="w-12 h-12 object-contain group-hover:rotate-12 transition-transform duration-300 drop-shadow-md"
+          />
           <span className="font-heading font-bold text-xl tracking-tight text-brand-black hidden sm:block">
             Cathy<span className="text-brand-orange">Club</span>.
           </span>
@@ -93,7 +96,6 @@ export default function Navbar() {
                 )}
             </Link>
 
-            {/* Login / Logout Button */}
             {isLoggedIn ? (
               <button 
                 onClick={handleLogout}

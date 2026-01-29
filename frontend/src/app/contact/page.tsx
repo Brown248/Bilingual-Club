@@ -21,7 +21,7 @@ export default function ContactPage() {
       name: 'Line Official',
       value: '@cathy_club',
       logo: 'https://upload.wikimedia.org/wikipedia/commons/4/41/LINE_logo.svg',
-      link: 'https://line.me', // แก้เป็นลิงก์ Line ของคุณ
+      link: 'https://line.me/R/ti/p/@280hhgup?ts=10151343&oat_content=url', // แก้เป็นลิงก์ Line ของคุณ
       color: 'group-hover:border-green-500'
     },
     {
