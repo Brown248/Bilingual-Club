@@ -1,113 +1,92 @@
 @import "tailwindcss";
 
 @theme {
-  /* --- 🎨 New Palette: Red-Orange-Yellow-Green-Black --- */
+  /* --- 🎨 New Palette: Fresh & Playful --- */
+  /* ชุดสีหลักตามโจทย์: ส้ม ขาว เหลือง เขียว เทาอ่อน */
   
-  /* 1. Vivid (สีสด) */
-  --color-brand-red:    #FF3B30; /* แดง */
-  --color-brand-orange: #FF9500; /* ส้ม */
-  --color-brand-yellow: #FFCC00; /* เหลือง */
-  --color-brand-green:  #34C759; /* เขียว */
-  --color-brand-black:  #111111; /* ดำสนิท */
-  --color-brand-gray:   #8E8E93; /* เทา */
+  /* Primary: ส้ม (ใช้สำหรับปุ่มหลัก, หัวข้อสำคัญ) - สดใสแต่ไม่แสบตา */
+  --color-brand-orange: #FF9F1C;
+  --color-brand-orange-hover: #FF8811;
 
-  /* 2. Soft (สีพื้นหลังอ่อนๆ) */
-  --color-soft-red:     #FFF5F5;
-  --color-soft-orange:  #FFF8F0;
-  --color-soft-yellow:  #FFFDF0;
-  --color-soft-green:   #F0FFF4;
-  --color-soft-gray:    #F5F5F7;
+  /* Secondary: เหลือง (ใช้สำหรับลูกเล่น, ไฮไลท์) - นุ่มนวล */
+  --color-brand-yellow: #FFBF00;
+  --color-brand-yellow-soft: #FFF4C1;
 
-  /* 3. Mapping (จับคู่) */
-  --color-primary: var(--color-brand-black);   /* ปุ่มหลักใช้สีดำ ดูแพง */
-  --color-secondary: var(--color-brand-orange);
-  --color-bg-page: #FFFFFF;
+  /* Accent: เขียว (ใช้สำหรับสถานะสำเร็จ, ใบไม้, ธรรมชาติ) */
+  --color-brand-green: #2EC4B6;
+  --color-brand-green-light: #CBF3F0;
+
+  /* Neutrals: เทาและขาว (พื้นหลังและการอ่าน) */
+  --color-brand-white: #FFFFFF;
+  --color-brand-gray-light: #F7F9F9; /* พื้นหลังเว็บ */
+  --color-brand-gray-medium: #E3E7E8; /* เส้นขอบ */
+  --color-brand-black: #2D3436;      /* สีตัวอักษรหลัก (ดำอมเทา อ่านสบาย) */
 
   /* Fonts */
   --font-heading: var(--font-poppins), sans-serif;
   --font-body: var(--font-inter), sans-serif;
 }
 
-/* --- 🎬 Animations --- */
-@keyframes fadeUp {
-  0% { opacity: 0; transform: translateY(30px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes scaleIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
-
-@keyframes gradientMove {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-/* Utilities */
-.animate-fade-up { animation: fadeUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
-.animate-scale-in { animation: scaleIn 0.6s ease-out forwards; }
-.animate-float { animation: float 5s ease-in-out infinite; }
-
-.text-gradient-warm {
-  background: linear-gradient(to right, var(--color-brand-red), var(--color-brand-orange), var(--color-brand-yellow));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-size: 200% auto;
-  animation: gradientMove 5s linear infinite;
-}
-
 body {
-  background: var(--color-bg-page);
+  background-color: var(--color-brand-gray-light);
   color: var(--color-brand-black);
   font-family: var(--font-body);
+  overflow-x: hidden; /* ป้องกัน scroll แนวนอนจาก animation */
 }
 
-@keyframes float {
-  0% { transform: translate(0px, 0px); }
-  33% { transform: translate(30px, -50px); }
-  66% { transform: translate(-20px, 20px); }
-  100% { transform: translate(0px, 0px); }
+/* --- ✨ Advanced Animations --- */
+
+/* 1. Floating (ลอยแบบนุ่มนวลขึ้น - เพิ่มแกน X เพื่อความสมจริง) */
+@keyframes float-organic {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  33% { transform: translate(10px, -15px) rotate(2deg); }
+  66% { transform: translate(-5px, 10px) rotate(-1deg); }
 }
 
-.animate-float {
-  animation: float 12s ease-in-out infinite;
+/* 2. Fade Up & Scale (ปรากฏตัวแบบขยายและลอยขึ้น) */
+@keyframes fade-scale-up {
+  0% { opacity: 0; transform: translateY(20px) scale(0.95); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-.animate-float-delayed {
-  animation: float 15s ease-in-out 5s infinite reverse;
+/* 3. Soft Pulse (การเต้นของหัวใจเบาๆ สำหรับปุ่ม Call to Action) */
+@keyframes soft-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(255, 159, 28, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(255, 159, 28, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 159, 28, 0); }
 }
 
-/* 2. ค่อยๆ ลอยขึ้นมา (สำหรับกล่อง Login) */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* 4. Shimmer (เอฟเฟกต์แสงวิบวับพาดผ่าน - ใช้กับ Loading หรือปุ่ม) */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
 }
 
-.animate-fade-in-up {
-  animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+/* --- Utility Classes --- */
+.animate-float-organic {
+  animation: float-organic 8s ease-in-out infinite;
 }
 
-/* 3. พื้นหลังขยับได้ (Gradient Animation) */
-@keyframes gradientBG {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+.animate-fade-scale-up {
+  animation: fade-scale-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.animate-gradient {
-  background-size: 200% 200%;
-  animation: gradientBG 6s ease infinite;
+.animate-soft-pulse {
+  animation: soft-pulse 2s infinite;
+}
+
+/* Glassmorphism Effect (กระจกฝ้า) - สวยมากเมื่อวางบนพื้นหลังสีส้ม/เหลือง */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.05);
+}
+
+/* Gradient Text (ตัวหนังสือไล่สี ส้ม->เหลือง) */
+.text-gradient-primary {
+  background: linear-gradient(135deg, var(--color-brand-orange), var(--color-brand-yellow));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }

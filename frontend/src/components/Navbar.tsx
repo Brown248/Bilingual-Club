@@ -14,7 +14,8 @@ export default function Navbar() {
   const { cartCount } = useCart();
 
   useEffect(() => {
-    const token = localStorage.getItem('access_token');
+    // เช็ค Client-side เพื่อป้องกัน Hydration Error
+    const token = typeof window !== 'undefined' ? localStorage.getItem('access_token') : null;
     setIsLoggedIn(!!token);
   }, [pathname]);
 
@@ -43,21 +44,22 @@ export default function Navbar() {
   ];
 
   return (
-    <div className="fixed top-6 left-0 right-0 z-50 flex justify-center px-4">
+    <div className="fixed top-6 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none">
+      {/* pointer-events-auto ใส่ที่ nav เพื่อให้กดได้เฉพาะตัวบาร์ ไม่บังพื้นที่ข้างๆ */}
       <nav className={`
-        flex items-center justify-between px-6 py-3 rounded-full transition-all duration-500
+        pointer-events-auto
+        flex items-center justify-between px-6 py-3 rounded-full transition-all duration-700 cubic-bezier(0.16, 1, 0.3, 1)
         ${scrolled 
-          ? 'bg-white/95 backdrop-blur-xl shadow-xl w-full max-w-5xl border border-gray-200' 
-          : 'bg-white/80 backdrop-blur-lg shadow-lg w-full max-w-6xl border border-white/50'}
+          ? 'bg-white/80 backdrop-blur-xl shadow-soft w-full max-w-5xl border border-white/40' 
+          : 'bg-white/60 backdrop-blur-md shadow-sm w-full max-w-6xl border border-white/20'}
       `}>
         
-        {/* ✅ LOGO: แก้ไขตรงนี้ครับ */}
+        {/* LOGO */}
         <Link href="/" className="flex items-center gap-3 group">
-          {/* ลบตัว C เดิมออก แล้วใส่ <img> แทน */}
           <img 
             src="/logo.png" 
             alt="Cathy Bilingual Club Logo" 
-            className="w-12 h-12 object-contain group-hover:rotate-12 transition-transform duration-300 drop-shadow-md"
+            className="w-12 h-12 object-contain group-hover:rotate-12 transition-transform duration-500 ease-out drop-shadow-sm"
           />
           <span className="font-heading font-bold text-xl tracking-tight text-brand-black hidden sm:block">
             Cathy<span className="text-brand-orange">Club</span>.
@@ -65,7 +67,7 @@ export default function Navbar() {
         </Link>
 
         {/* Links */}
-        <div className="hidden md:flex items-center gap-1 bg-gray-100/50 p-1.5 rounded-full">
+        <div className="hidden md:flex items-center gap-1 bg-brand-gray/50 p-1.5 rounded-full border border-white/30 backdrop-blur-sm">
           {navLinks.map((link) => {
             const isActive = pathname === link.href;
             return (
@@ -73,10 +75,10 @@ export default function Navbar() {
                 key={link.name}
                 href={link.href}
                 className={`
-                  px-5 py-2 rounded-full text-sm font-medium transition-all duration-300
+                  relative px-5 py-2 rounded-full text-sm font-medium transition-all duration-500 ease-out
                   ${isActive 
-                    ? 'bg-brand-black text-white shadow-md' 
-                    : 'text-gray-500 hover:text-brand-black hover:bg-white'}
+                    ? 'bg-white text-brand-orange shadow-sm scale-105' 
+                    : 'text-gray-500 hover:text-brand-black hover:bg-white/50'}
                 `}
               >
                 {link.name}
@@ -87,10 +89,10 @@ export default function Navbar() {
 
         {/* Right Side */}
         <div className="flex items-center gap-3">
-            <Link href="/cart" className="relative p-2 rounded-full hover:bg-gray-100 transition-colors">
-                <svg className="w-6 h-6 text-brand-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+            <Link href="/cart" className="relative p-2 rounded-full hover:bg-white/80 transition-all duration-300 group">
+                <svg className="w-6 h-6 text-brand-black group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
                 {cartCount > 0 && (
-                    <span className="absolute top-0 right-0 w-5 h-5 bg-brand-red text-white text-xs font-bold rounded-full flex items-center justify-center animate-scale-in">
+                    <span className="absolute top-0 right-0 w-5 h-5 bg-brand-orange text-white text-xs font-bold rounded-full flex items-center justify-center animate-bounce-slight shadow-sm">
                         {cartCount}
                     </span>
                 )}
@@ -99,14 +101,14 @@ export default function Navbar() {
             {isLoggedIn ? (
               <button 
                 onClick={handleLogout}
-                className="px-6 py-2.5 rounded-full bg-red-500 text-white text-sm font-bold hover:bg-red-600 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 hidden sm:block"
+                className="px-6 py-2.5 rounded-full bg-red-50 text-red-500 border border-red-100 text-sm font-bold hover:bg-red-500 hover:text-white hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 hidden sm:block"
               >
                 Log Out
               </button>
             ) : (
               <Link 
                 href="/login" 
-                className="px-6 py-2.5 rounded-full bg-brand-orange text-white text-sm font-bold hover:bg-brand-red hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 hidden sm:block"
+                className="px-6 py-2.5 rounded-full bg-brand-black text-white text-sm font-bold hover:bg-brand-orange hover:shadow-glow hover:-translate-y-0.5 transition-all duration-300 hidden sm:block"
               >
                 Log In
               </Link>

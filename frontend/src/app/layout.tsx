@@ -20,9 +20,8 @@ const sarabun = Sarabun({
 export const metadata: Metadata = {
   title: "Cathy Bilingual Club",
   description: "Learn English & Chinese with Cathy experts.",
-  // ✅ เพิ่มบรรทัดนี้: เพื่อเปลี่ยนโลโก้ตรงแท็บ Browser
   icons: {
-    icon: '/logo.png', // ดึงรูปจาก public/logo.png มาแสดง
+    icon: '/logo.png',
   },
 };
 
@@ -32,9 +31,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${kanit.variable} ${sarabun.variable} font-body antialiased bg-gray-50`}>
-        {/* ใช้ MainLayout จัดการ Navbar/Footer */}
+    <html lang="en" className="scroll-smooth"> {/* ✅ เพิ่ม scroll-smooth ที่นี่ */}
+      <body className={`${kanit.variable} ${sarabun.variable} font-body antialiased bg-brand-gray text-brand-black`}>
         <MainLayout>
           {children}
         </MainLayout>
