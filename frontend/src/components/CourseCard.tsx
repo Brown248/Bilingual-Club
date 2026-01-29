@@ -1,78 +1,80 @@
-'use client';
-
-import Image from 'next/image';
 import Link from 'next/link';
-import { useCart } from '@/context/CartContext';
+import Image from 'next/image';
 
-interface CourseCardProps {
-  id: number;
+interface CourseProps {
+  id: string | number;
   title: string;
   description: string;
   price: number;
   image: string;
-  category: string;
-  instructor?: string;
+  category?: string;
+  level?: string; // เพิ่มระดับความยาก (ถ้ามี)
+  rating?: number; // เพิ่มคะแนนรีวิว (ถ้ามี)
 }
 
-export default function CourseCard({ id, title, description, price, image, category, instructor = "Cathy" }: CourseCardProps) {
-  const { addToCart } = useCart();
-
-  const handleAddToCart = (e: React.MouseEvent) => {
-    e.preventDefault();
-    addToCart({
-      id: id,  // ✅ แก้ตรงนี้: ไม่ต้องมี .toString() แล้ว (ส่งเป็นตัวเลขเลย)
-      title,
-      price,
-      image,
-      type: 'course' as const // ✅ เพิ่ม as const เพื่อความชัวร์
-    });
-    alert(`Added "${title}" to cart!`);
-  };
-
+export default function CourseCard({ course }: { course: CourseProps }) {
   return (
-    <Link href={`/courses/${id}`} className="group block h-full">
-      <div className="bg-white rounded-[2rem] overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 h-full flex flex-col">
-        <div className="relative h-56 w-full bg-gray-200 overflow-hidden">
+    <Link href={`/courses/${course.id}`} className="block h-full">
+      <div className="group relative flex flex-col h-full bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+        
+        {/* Image Cover */}
+        <div className="relative h-64 w-full overflow-hidden">
           <Image 
-            src={image} 
-            alt={title} 
-            fill 
-            className="object-cover group-hover:scale-110 transition-transform duration-500"
-            unoptimized 
+            src={course.image || '/course-placeholder.jpg'} 
+            alt={course.title}
+            fill
+            className="object-cover transform group-hover:scale-110 transition-transform duration-700 ease-in-out"
           />
-          <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-brand-black shadow-sm">
-            {category}
+          {/* Overlay Gradient (เพื่อให้ตัวหนังสืออ่านง่ายถ้ามี) */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+          {/* Badges */}
+          <div className="absolute top-4 left-4 flex gap-2">
+            {course.category && (
+              <span className="bg-white/95 backdrop-blur-md text-brand-black text-xs font-bold px-3 py-1 rounded-full shadow-sm flex items-center gap-1">
+                 🏷️ {course.category}
+              </span>
+            )}
+            <span className="bg-brand-orange/90 backdrop-blur-md text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm">
+              🔥 Popular
+            </span>
           </div>
         </div>
 
-        <div className="p-6 flex flex-col flex-grow">
-          <div className="flex items-center gap-2 mb-3">
-             <div className="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center text-[10px] font-bold text-gray-500">
-                {instructor.charAt(0)}
-             </div>
-             <span className="text-xs text-gray-500 font-medium">By {instructor}</span>
-          </div>
+        {/* Content */}
+        <div className="flex flex-col flex-grow p-6">
+            {/* Rating & Level */}
+            <div className="flex items-center justify-between text-xs text-gray-400 mb-3">
+                <div className="flex items-center gap-1 text-yellow-400">
+                    {'★'.repeat(5)} <span className="text-gray-400 ml-1">(4.9)</span>
+                </div>
+                <span className="px-2 py-0.5 rounded-md bg-gray-100 text-gray-500 font-medium">
+                    {course.level || 'All Levels'}
+                </span>
+            </div>
 
-          <h3 className="text-xl font-heading font-bold text-brand-black mb-2 line-clamp-2 group-hover:text-brand-orange transition-colors">
-            {title}
-          </h3>
-          
-          <p className="text-gray-500 text-sm mb-6 line-clamp-2 flex-grow">
-            {description}
-          </p>
-
-          <div className="flex items-center justify-between mt-auto pt-4 border-t border-gray-50">
-            <span className="text-2xl font-bold text-brand-orange">
-              ฿{price.toLocaleString()}
-            </span>
+            <h3 className="font-heading text-xl font-bold text-brand-black mb-3 line-clamp-2 leading-tight group-hover:text-brand-orange transition-colors">
+                {course.title}
+            </h3>
             
-            <button 
-              onClick={handleAddToCart}
-              className="px-4 py-2 bg-brand-black text-white text-sm font-bold rounded-full hover:bg-brand-orange transition-colors shadow-md active:scale-95"
-            >
-              Add to Cart
-            </button>
-          </div>
+            <p className="text-gray-500 text-sm mb-6 line-clamp-2 flex-grow">
+                {course.description}
+            </p>
+            
+            {/* Footer: Price & Avatar mockup */}
+            <div className="flex items-center justify-between mt-auto pt-5 border-t border-gray-50">
+                <div className="flex items-center gap-2">
+                    {/* Mockup Avatar คนสอน */}
+                    <div className="w-8 h-8 rounded-full bg-gray-200 border-2 border-white shadow-sm overflow-hidden relative">
+                         {/* ใส่รูปคนสอนจริงตรงนี้ถ้ามี */}
+                         <div className="absolute inset-0 bg-gradient-to-tr from-brand-orange to-brand-yellow"></div>
+                    </div>
+                    <span className="text-xs text-gray-500 font-medium">By Cathy Team</span>
+                </div>
+                <span className="text-xl font-bold text-brand-black group-hover:text-brand-green transition-colors">
+                    ฿{course.price.toLocaleString()}
+                </span>
+            </div>
         </div>
       </div>
     </Link>

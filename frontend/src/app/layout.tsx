@@ -31,7 +31,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth"> {/* ✅ เพิ่ม scroll-smooth ที่นี่ */}
+    // 👇 ใส่ className="scroll-smooth" ตรงนี้ครับ
+    <html lang="en" className="scroll-smooth"> 
       <body className={`${kanit.variable} ${sarabun.variable} font-body antialiased bg-brand-gray text-brand-black`}>
         <MainLayout>
           {children}
