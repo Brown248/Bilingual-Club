@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float
+from sqlalchemy import Column, Integer, String, Float, Text
 from app.db.session import Base
 
 class Ebook(Base):
@@ -6,8 +6,8 @@ class Ebook(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, index=True)
-    description = Column(String, nullable=True)
+    description = Column(Text)
     price = Column(Float)
     author = Column(String)
     image = Column(String, nullable=True)
-    file_url = Column(String, nullable=True) # ลิงก์ดาวน์โหลดไฟล์ PDF
+    file_url = Column(String, nullable=True)

@@ -1,26 +1,23 @@
 from pydantic import BaseModel
 from typing import List, Optional, Any
+from datetime import datetime
 
-# ข้อมูลสินค้าในตะกร้า (ย่อย)
 class OrderItem(BaseModel):
     id: str | int
     title: str
     price: float
-    type: str # 'course' หรือ 'ebook'
+    type: str 
 
-# ข้อมูลตอนลูกค้าส่งมา (Create)
-class OrderCreate(BaseModel):
+# สำหรับ Response กลับไปหน้าบ้าน
+class Order(BaseModel):
+    id: int
     customer_name: str
     contact_info: str
     total_price: float
-    items: List[OrderItem]
-    slip_image: str # Base64 string
-
-# ข้อมูลตอนส่งกลับให้ Admin ดู (Read)
-class Order(OrderCreate):
-    id: int
     status: str
-    created_at: Optional[str] = None
+    items: List[OrderItem] | Any # รองรับ Any เผื่อ JSON parse
+    slip_image: Optional[str] = None
+    created_at: Optional[datetime] = None
 
     class Config:
         from_attributes = True

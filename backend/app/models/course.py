@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float
+from sqlalchemy import Column, Integer, String, Float, Text
 from app.db.session import Base
 
 class Course(Base):
@@ -6,8 +6,8 @@ class Course(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, index=True)
-    description = Column(String, nullable=True)
+    description = Column(Text)
     price = Column(Float)
     instructor = Column(String)
-    category = Column(String) # English, Chinese
-    image = Column(String, nullable=True) # เก็บเป็น URL หรือ Base64 Text
+    category = Column(String)
+    image = Column(String, nullable=True)

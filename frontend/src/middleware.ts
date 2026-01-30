@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-// กำหนดว่า Middleware นี้จะทำงานเฉพาะหน้า Admin
 export const config = {
   matcher: '/admin/:path*',
 }

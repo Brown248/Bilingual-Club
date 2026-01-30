@@ -6,4 +6,4 @@ class Admin(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String, unique=True, index=True)
-    hashed_password = Column(String) # เก็บพาสเวิร์ดแบบเข้ารหัส
+    hashed_password = Column(String)

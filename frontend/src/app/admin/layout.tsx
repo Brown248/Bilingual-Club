@@ -8,7 +8,24 @@ import Cookies from 'js-cookie';
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
-  const [isSidebarOpen, setSidebarOpen] = useState(true); // เพิ่ม State เปิด/ปิดเมนูได้ถ้าต้องการ
+  const [isSidebarOpen, setSidebarOpen] = useState(true);
+  
+  // ✅ เพิ่ม State สำหรับตรวจสอบว่าได้รับอนุญาตหรือไม่
+  const [isAuthorized, setIsAuthorized] = useState(false);
+
+  // ✅ Client-side Protection: กันคนกด Back กลับมา
+  useEffect(() => {
+    // ตรวจสอบทั้ง LocalStorage และ Cookies เพื่อความชัวร์
+    const token = localStorage.getItem('access_token');
+    
+    if (!token) {
+      // ถ้าไม่มี Token ให้ดีดไปหน้า Login ทันที
+      router.replace('/login');
+    } else {
+      // ถ้ามี Token ให้แสดงเนื้อหาได้
+      setIsAuthorized(true);
+    }
+  }, [pathname, router]);
 
   // เมนู Admin
   const menuItems = [
@@ -20,11 +37,19 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   const handleLogout = () => {
     if (confirm("Logout from Admin panel?")) {
+      // ลบ Token ทั้งหมด
       localStorage.removeItem('access_token');
       Cookies.remove('access_token');
-      router.push('/login');
+      // ใช้ replace เพื่อไม่ให้เก็บ history การ logout ไว้
+      router.replace('/login'); 
     }
   };
+
+  // 🚫 ถ้ายังตรวจสอบไม่เสร็จ (isAuthorized = false) ไม่ต้องเรนเดอร์เนื้อหา
+  // เพื่อป้องกันภาพหน้า Admin แวบขึ้นมาก่อนโดนดีด
+  if (!isAuthorized) {
+    return null; // หรือใส่ <div className="p-10 text-center">Checking permission...</div>
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 flex font-body">
@@ -32,7 +57,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* Sidebar */}
       <aside className={`bg-white w-64 shadow-xl fixed inset-y-0 left-0 z-50 transition-all duration-300 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
         
-        {/* ✅ Logo Header: แก้ตรงนี้ */}
+        {/* Logo Header */}
         <div className="h-24 flex items-center justify-center border-b border-gray-100">
           <Link href="/admin" className="flex items-center gap-3">
             <img 

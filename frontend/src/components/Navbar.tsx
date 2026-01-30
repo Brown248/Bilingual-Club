@@ -14,18 +14,26 @@ export default function Navbar() {
   const { cartCount } = useCart();
 
   useEffect(() => {
-    // เช็ค Client-side เพื่อป้องกัน Hydration Error
+    // เช็ค Token เพื่อแสดงสถานะ Login/Logout บนปุ่ม
     const token = typeof window !== 'undefined' ? localStorage.getItem('access_token') : null;
     setIsLoggedIn(!!token);
   }, [pathname]);
 
   const handleLogout = () => {
     if (confirm("คุณต้องการออกจากระบบใช่หรือไม่?")) {
+      // ✅ ลบให้เกลี้ยงทั้ง Cookies และ LocalStorage
       localStorage.removeItem('access_token'); 
       Cookies.remove('access_token');
+      
       setIsLoggedIn(false);
-      router.push('/');
-      window.location.reload(); 
+      
+      // ✅ ใช้ replace เพื่อไม่ให้ Back กลับมาได้ง่ายๆ และ refresh หน้าเพื่อเคลียร์ State
+      router.replace('/'); 
+      
+      // ใช้ setTimeout เล็กน้อยเพื่อให้ router ทำงานก่อนแล้วค่อย reload (ถ้าจำเป็น)
+      setTimeout(() => {
+        window.location.reload(); 
+      }, 100);
     }
   };
 
@@ -45,7 +53,6 @@ export default function Navbar() {
 
   return (
     <div className="fixed top-6 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none">
-      {/* pointer-events-auto ใส่ที่ nav เพื่อให้กดได้เฉพาะตัวบาร์ ไม่บังพื้นที่ข้างๆ */}
       <nav className={`
         pointer-events-auto
         flex items-center justify-between px-6 py-3 rounded-full transition-all duration-700 cubic-bezier(0.16, 1, 0.3, 1)

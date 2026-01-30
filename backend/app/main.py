@@ -1,47 +1,65 @@
-# backend/app/main.py
+import logging
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+
 from app.db.session import engine, SessionLocal
-from app.models import admin, course, ebook, order
+from app.models import admin
 from app.api.v1.api import api_router
 from app.core import security
+from app.core.config import settings
 
-# สร้างตาราง
+# Logging Config
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+# Create Tables
 admin.Base.metadata.create_all(bind=engine)
 
-app = FastAPI(title="Cathy Bilingual Club API", version="1.0.0")
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup: Create Admin if not exists
+    db = SessionLocal()
+    try:
+        user = db.query(admin.Admin).filter(admin.Admin.username == "admin").first()
+        if not user:
+            logger.info("Creating initial admin user...")
+            new_admin = admin.Admin(
+                username="admin",
+                hashed_password=security.get_password_hash("1234")
+            )
+            db.add(new_admin)
+            db.commit()
+            logger.info("Admin created! (User: admin / Pass: 1234)")
+    except Exception as e:
+        logger.error(f"Error creating initial admin: {e}")
+    finally:
+        db.close()
+    
+    yield
+    # Shutdown logic (if any)
+
+app = FastAPI(
+    title=settings.PROJECT_NAME, 
+    version="1.0.0",
+    lifespan=lifespan
+)
 
 # CORS
-origins = ["http://localhost:3000"]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=settings.BACKEND_CORS_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# ✅ รวม API Router (เส้นทางทั้งหมดจะขึ้นต้นด้วย /api/v1)
-app.include_router(api_router, prefix="/api/v1")
+# Mount Static Files (สำหรับดูรูปสลิป)
+app.mount("/static", StaticFiles(directory="uploads"), name="static")
 
-# ✅ ฟังก์ชันสร้าง Admin คนแรก (ถ้ายังไม่มี)
-@app.on_event("startup")
-def create_initial_admin():
-    db = SessionLocal()
-    # เช็คว่ามี admin หรือยัง?
-    user = db.query(admin.Admin).filter(admin.Admin.username == "admin").first()
-    if not user:
-        print("Creating initial admin user...")
-        # สร้าง admin / 1234
-        new_admin = admin.Admin(
-            username="admin",
-            hashed_password=security.get_password_hash("1234")
-        )
-        db.add(new_admin)
-        db.commit()
-        print("Admin created! (User: admin / Pass: 1234)")
-    db.close()
+app.include_router(api_router, prefix="/api/v1")
 
 @app.get("/")
 def read_root():
-    return {"message": "Hello from Python 3.14 Backend! 🐍"}
+    return {"message": "Cathy Bilingual Club API is running! 🚀"}

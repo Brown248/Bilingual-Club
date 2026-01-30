@@ -7,19 +7,20 @@ class EbookBase(BaseModel):
     price: float
     author: str
     image: Optional[str] = None
-    file_url: Optional[str] = None # ลิงก์ไฟล์ PDF (ถ้ามี)
+    file_url: Optional[str] = None
 
 class EbookCreate(EbookBase):
     pass
 
-class EbookUpdate(EbookBase):
+class EbookUpdate(BaseModel):
     title: Optional[str] = None
+    description: Optional[str] = None
     price: Optional[float] = None
     author: Optional[str] = None
+    image: Optional[str] = None
     file_url: Optional[str] = None
 
 class Ebook(EbookBase):
     id: int
-
     class Config:
         from_attributes = True
