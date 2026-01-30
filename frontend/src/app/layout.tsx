@@ -3,6 +3,7 @@ import { Kanit, Sarabun } from "next/font/google";
 import "./globals.css";
 import MainLayout from "@/components/MainLayout";
 
+// ตั้งค่าฟอนต์
 const kanit = Kanit({
   weight: ['400', '700'],
   subsets: ['thai', 'latin'],
@@ -31,9 +32,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    // 👇 ใส่ className="scroll-smooth" ตรงนี้ครับ
-    <html lang="en" className="scroll-smooth"> 
-      <body className={`${kanit.variable} ${sarabun.variable} font-body antialiased bg-brand-gray text-brand-black`}>
+    // ✅ จุดสำคัญ: ต้องมี <html lang="en"> และ <body> ครอบทั้งหมดเสมอ
+    <html lang="en">
+      <body className={`${kanit.variable} ${sarabun.variable} font-body antialiased bg-[#F4F7F6] text-[#2D3436]`}>
+        {/* เรียกใช้ MainLayout เพื่อจัดการ Navbar/Footer ข้างใน body */}
         <MainLayout>
           {children}
         </MainLayout>
