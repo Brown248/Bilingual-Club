@@ -115,11 +115,7 @@ export default function Home() {
                   
                   {/* Floating Badge */}
                   <div className="absolute -bottom-6 -left-6 bg-white p-4 rounded-2xl shadow-xl flex items-center gap-4 animate-float">
-                    <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-2xl">🏆</div>
-                    <div>
-                      <p className="text-xs text-gray-400 font-bold uppercase">Certified</p>
-                      <p className="text-sm font-bold text-brand-black">Professional Tutors</p>
-                    </div>
+
                   </div>
               </div>
             </div>

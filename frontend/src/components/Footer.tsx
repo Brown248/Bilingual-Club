@@ -63,11 +63,11 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-3 group cursor-default">
                 <span className="w-8 h-8 rounded-full bg-orange-50 flex items-center justify-center text-brand-orange group-hover:bg-brand-orange group-hover:text-white transition-colors">✉️</span>
-                <span>hello@bilingualclub.com</span>
+                <span>dankedoky2000@gmail.com</span>
               </li>
               <li className="flex items-center gap-3 group cursor-default">
                 <span className="w-8 h-8 rounded-full bg-green-50 flex items-center justify-center text-green-600 group-hover:bg-green-500 group-hover:text-white transition-colors font-bold">L</span>
-                <span>@cathy_club</span>
+                <span>Cathy Bilingual Club</span>
               </li>
             </ul>
           </div>

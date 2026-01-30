@@ -7,28 +7,28 @@ export default function ContactPage() {
       value: 'Cathy Bilingual Club',
       // ใช้ Logo Official
       logo: 'https://upload.wikimedia.org/wikipedia/commons/b/b9/2023_Facebook_icon.svg',
-      link: 'https://facebook.com', // แก้เป็นลิงก์เพจของคุณ
+      link: 'https://www.facebook.com/CathyBilingualClub', // แก้เป็นลิงก์เพจของคุณ
       color: 'group-hover:border-blue-500'
     },
     {
       name: 'Instagram',
-      value: '@cathy_bilingual',
+      value: 'cathy_bilingual_club',
       logo: 'https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png',
-      link: 'https://instagram.com', // แก้เป็นลิงก์ IG ของคุณ
+      link: 'https://www.instagram.com/cathy_bilingual_club?igsh=aTJqcnNqcGlzbWJ1&utm_source=qr', // แก้เป็นลิงก์ IG ของคุณ
       color: 'group-hover:border-pink-500'
     },
     {
       name: 'Line Official',
-      value: '@cathy_club',
+      value: 'Cathy Bilingual Club',
       logo: 'https://upload.wikimedia.org/wikipedia/commons/4/41/LINE_logo.svg',
       link: 'https://line.me/R/ti/p/@280hhgup?ts=10151343&oat_content=url', // แก้เป็นลิงก์ Line ของคุณ
       color: 'group-hover:border-green-500'
     },
     {
       name: 'Email',
-      value: 'hello@bilingualclub.com',
+      value: 'dankedoky2000@gmail.com',
       logo: 'https://cdn-icons-png.flaticon.com/512/732/732200.png',
-      link: 'mailto:hello@bilingualclub.com',
+      link: 'mailto:dankedoky2000@gmail.com',
       color: 'group-hover:border-brand-orange'
     }
   ];
