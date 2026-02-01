@@ -88,3 +88,4 @@ def update_order_status(
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=f"Failed to update status: {str(e)}")
+    
